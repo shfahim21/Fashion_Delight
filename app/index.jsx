@@ -5,10 +5,13 @@ import { StyleSheet, Text, View } from "react-native";
 export default function App() {
   return (
     <View className="flex-1 items-center justify-center bg-black">
-      <Text className="text-white">
-        Open up App.js to start working on your app!
-      </Text>
-      <Link href="/profile">Go to profile</Link>
+      <Text className="text-white text-2xl">Finally</Text>
+      <Link
+        href="/profile"
+        className="text-black p-4 bg-white rounded-full font-semibold"
+      >
+        Go to profile
+      </Link>
       <StatusBar style="auto" />
     </View>
   );
