@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -50,7 +51,7 @@ const SignInScreen = ({ navigation }) => {
           <View className="items-center mt-10">
             <Image
               source={require('../assets/logo.png.png')}
-              className="w-40 h-40"
+              className="w-20 h-20"
               resizeMode="contain"
             />
           </View>
@@ -68,7 +69,7 @@ const SignInScreen = ({ navigation }) => {
           {/* Form Section */}
           <View className="mt-8">
             {/* Email Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
               <Icon name="mail-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -83,7 +84,7 @@ const SignInScreen = ({ navigation }) => {
             </View>
 
             {/* Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12">
               <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -111,15 +112,15 @@ const SignInScreen = ({ navigation }) => {
               onPress={() => navigation.navigate('ForgotPassword')}
               className="items-end mt-3"
             >
-              <Text className="text-sm text-gray-600">
+              <Text className="text-sm text-third">
                 Forgot Password?
               </Text>
             </TouchableOpacity>
 
             {/* Sign In Button */}
             <TouchableOpacity
-              className={`h-12 rounded-lg items-center justify-center mt-6 ${
-                loading ? 'bg-second' : 'bg-blue-600'
+              className={`h-12 rounded-full items-center justify-center mt-6 ${
+                loading ? 'bg-fourth' : 'bg-second-200'
               }`}
               onPress={handleSignIn}
               disabled={loading}
@@ -150,11 +151,7 @@ const SignInScreen = ({ navigation }) => {
               <Text className="text-gray-600 text-sm">
                 Don't have an account?{' '}
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                <Text className="text-blue-600 text-sm font-semibold">
-                  Sign Up
-                </Text>
-              </TouchableOpacity>
+              <Link href='/sign-up' className='text-second-200 font-semibold'>Sign Up</Link>
             </View>
           </View>
         </ScrollView>

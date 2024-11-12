@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -64,11 +65,11 @@ const SignUpScreen = ({ navigation }) => {
         <ScrollView className="flex-1 px-6">
           {/* Logo Section */}
           <View className="items-center mt-8">
-            {/* <Image
+            <Image
               source={require('../assets/logo.png.png')}
-              className="w-32 h-32"
+              className="w-20 h-20"
               resizeMode="contain"
-            /> */}
+            />
           </View>
 
           {/* Welcome Text */}
@@ -84,7 +85,7 @@ const SignUpScreen = ({ navigation }) => {
           {/* Form Section */}
           <View className="mt-8">
             {/* Full Name Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
               <Icon name="person-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -97,7 +98,7 @@ const SignUpScreen = ({ navigation }) => {
             </View>
 
             {/* Email Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
               <Icon name="mail-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -112,7 +113,7 @@ const SignUpScreen = ({ navigation }) => {
             </View>
 
             {/* Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
               <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -136,7 +137,7 @@ const SignUpScreen = ({ navigation }) => {
             </View>
 
             {/* Confirm Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4">
+            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
               <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
@@ -162,15 +163,15 @@ const SignUpScreen = ({ navigation }) => {
             {/* Terms and Conditions */}
             <Text className="text-sm text-gray-600 text-center mt-2">
               By signing up, you agree to our{' '}
-              <Text className="text-blue-600">Terms of Service</Text>
+              <Text className="text-green-500">Terms of Service</Text>
               {' '}and{' '}
-              <Text className="text-blue-600">Privacy Policy</Text>
+              <Text className="text-green-500">Privacy Policy</Text>
             </Text>
 
             {/* Sign Up Button */}
             <TouchableOpacity
-              className={`h-12 rounded-lg items-center justify-center mt-6 ${
-                loading ? 'bg-blue-400' : 'bg-blue-600'
+              className={`h-12 rounded-full items-center justify-center mt-6 ${
+                loading ? 'bg-second-200' : 'bg-second-200'
               }`}
               onPress={handleSignUp}
               disabled={loading}
@@ -201,11 +202,9 @@ const SignUpScreen = ({ navigation }) => {
               <Text className="text-gray-600 text-sm">
                 Already have an account?{' '}
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-                <Text className="text-blue-600 text-sm font-semibold">
+              <Link href='/sign-in' className="text-green-600 text-sm font-semibold">
                   Sign In
-                </Text>
-              </TouchableOpacity>
+                </Link>
             </View>
           </View>
         </ScrollView>

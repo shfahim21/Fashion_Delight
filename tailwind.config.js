@@ -10,7 +10,7 @@ module.exports = {
           100: "#0A7075",
           200: "#0C969C",
         },
-        third: "6BA3BE",
+        third: "#6BA3BE",
         fourth: "#CDCDE0",
       },
     },
