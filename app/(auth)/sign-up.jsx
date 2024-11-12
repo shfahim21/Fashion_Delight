@@ -1,5 +1,5 @@
-import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import { Link } from "expo-router";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,17 +9,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Ionicons';
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const SignUpScreen = ({ navigation }) => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -27,18 +27,23 @@ const SignUpScreen = ({ navigation }) => {
 
   const handleSignUp = async () => {
     // Basic validation
-    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     if (formData.password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
+      Alert.alert("Error", "Password must be at least 8 characters long");
       return;
     }
 
@@ -46,11 +51,11 @@ const SignUpScreen = ({ navigation }) => {
       setLoading(true);
       // Add your sign up logic here
       // Example: await auth.createUserWithEmailAndPassword(email, password);
-      
+
       // Navigate to main app after successful sign up
       // navigation.replace('MainApp');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert("Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -59,17 +64,17 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
         <ScrollView className="flex-1 px-6">
           {/* Logo Section */}
           <View className="items-center mt-8">
-            <Image
+            {/* <Image
               source={require('../assets/logo.png.png')}
               className="w-20 h-20"
               resizeMode="contain"
-            />
+            /> */}
           </View>
 
           {/* Welcome Text */}
@@ -91,7 +96,9 @@ const SignUpScreen = ({ navigation }) => {
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Full Name"
                 value={formData.fullName}
-                onChangeText={(text) => setFormData({...formData, fullName: text})}
+                onChangeText={(text) =>
+                  setFormData({ ...formData, fullName: text })
+                }
                 autoCapitalize="words"
                 placeholderTextColor="#9CA3AF"
               />
@@ -104,7 +111,9 @@ const SignUpScreen = ({ navigation }) => {
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Email"
                 value={formData.email}
-                onChangeText={(text) => setFormData({...formData, email: text})}
+                onChangeText={(text) =>
+                  setFormData({ ...formData, email: text })
+                }
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -114,12 +123,18 @@ const SignUpScreen = ({ navigation }) => {
 
             {/* Password Input */}
             <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
+              <Icon
+                name="lock-closed-outline"
+                size={20}
+                className="text-gray-500"
+              />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Password"
                 value={formData.password}
-                onChangeText={(text) => setFormData({...formData, password: text})}
+                onChangeText={(text) =>
+                  setFormData({ ...formData, password: text })
+                }
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 placeholderTextColor="#9CA3AF"
@@ -129,7 +144,7 @@ const SignUpScreen = ({ navigation }) => {
                 className="p-1"
               >
                 <Icon
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
                   className="text-gray-500"
                 />
@@ -138,12 +153,18 @@ const SignUpScreen = ({ navigation }) => {
 
             {/* Confirm Password Input */}
             <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
+              <Icon
+                name="lock-closed-outline"
+                size={20}
+                className="text-gray-500"
+              />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
-                onChangeText={(text) => setFormData({...formData, confirmPassword: text})}
+                onChangeText={(text) =>
+                  setFormData({ ...formData, confirmPassword: text })
+                }
                 secureTextEntry={!showConfirmPassword}
                 autoCapitalize="none"
                 placeholderTextColor="#9CA3AF"
@@ -153,7 +174,7 @@ const SignUpScreen = ({ navigation }) => {
                 className="p-1"
               >
                 <Icon
-                  name={showConfirmPassword ? 'eye-outline' : 'eye-off-outline'}
+                  name={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
                   className="text-gray-500"
                 />
@@ -162,22 +183,21 @@ const SignUpScreen = ({ navigation }) => {
 
             {/* Terms and Conditions */}
             <Text className="text-sm text-gray-600 text-center mt-2">
-              By signing up, you agree to our{' '}
-              <Text className="text-green-500">Terms of Service</Text>
-              {' '}and{' '}
+              By signing up, you agree to our{" "}
+              <Text className="text-green-500">Terms of Service</Text> and{" "}
               <Text className="text-green-500">Privacy Policy</Text>
             </Text>
 
             {/* Sign Up Button */}
             <TouchableOpacity
               className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? 'bg-second-200' : 'bg-second-200'
+                loading ? "bg-second-200" : "bg-second-200"
               }`}
               onPress={handleSignUp}
               disabled={loading}
             >
               <Text className="text-white text-base font-semibold">
-                {loading ? 'Creating Account...' : 'Sign Up'}
+                {loading ? "Creating Account..." : "Sign Up"}
               </Text>
             </TouchableOpacity>
 
@@ -200,11 +220,14 @@ const SignUpScreen = ({ navigation }) => {
             {/* Sign In Link */}
             <View className="flex-row justify-center mt-6 mb-8">
               <Text className="text-gray-600 text-sm">
-                Already have an account?{' '}
+                Already have an account?{" "}
               </Text>
-              <Link href='/sign-in' className="text-green-600 text-sm font-semibold">
-                  Sign In
-                </Link>
+              <Link
+                href="/sign-in"
+                className="text-green-600 text-sm font-semibold"
+              >
+                Sign In
+              </Link>
             </View>
           </View>
         </ScrollView>

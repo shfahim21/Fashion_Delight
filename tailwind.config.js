@@ -12,6 +12,7 @@ module.exports = {
         },
         third: "#6BA3BE",
         fourth: "#CDCDE0",
+        fifth: "#274D60",
       },
     },
   },

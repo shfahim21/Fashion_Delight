@@ -1,5 +1,5 @@
-import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import { Link } from "expo-router";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,20 +9,20 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Ionicons';
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const SignInScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
@@ -30,11 +30,11 @@ const SignInScreen = ({ navigation }) => {
       setLoading(true);
       // Add your authentication logic here
       // Example: await auth.signInWithEmailAndPassword(email, password);
-      
+
       // Navigate to main app after successful sign in
       // navigation.replace('MainApp');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert("Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -43,17 +43,17 @@ const SignInScreen = ({ navigation }) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
         <ScrollView className="flex-1 px-6">
           {/* Logo Section */}
           <View className="items-center mt-10">
-            <Image
+            {/* <Image
               source={require('../assets/logo.png.png')}
               className="w-20 h-20"
               resizeMode="contain"
-            />
+            /> */}
           </View>
 
           {/* Welcome Text */}
@@ -85,7 +85,11 @@ const SignInScreen = ({ navigation }) => {
 
             {/* Password Input */}
             <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12">
-              <Icon name="lock-closed-outline" size={20} className="text-gray-500" />
+              <Icon
+                name="lock-closed-outline"
+                size={20}
+                className="text-gray-500"
+              />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Password"
@@ -100,7 +104,7 @@ const SignInScreen = ({ navigation }) => {
                 className="p-1"
               >
                 <Icon
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
                   className="text-gray-500"
                 />
@@ -109,24 +113,22 @@ const SignInScreen = ({ navigation }) => {
 
             {/* Forgot Password */}
             <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPassword')}
+              onPress={() => navigation.navigate("ForgotPassword")}
               className="items-end mt-3"
             >
-              <Text className="text-sm text-third">
-                Forgot Password?
-              </Text>
+              <Text className="text-sm text-third">Forgot Password?</Text>
             </TouchableOpacity>
 
             {/* Sign In Button */}
             <TouchableOpacity
               className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? 'bg-fourth' : 'bg-second-200'
+                loading ? "bg-fourth" : "bg-second-200"
               }`}
               onPress={handleSignIn}
               disabled={loading}
             >
               <Text className="text-white text-base font-semibold">
-                {loading ? 'Signing in...' : 'Sign In'}
+                {loading ? "Signing in..." : "Sign In"}
               </Text>
             </TouchableOpacity>
 
@@ -149,9 +151,11 @@ const SignInScreen = ({ navigation }) => {
             {/* Sign Up Link */}
             <View className="flex-row justify-center mt-6 mb-8">
               <Text className="text-gray-600 text-sm">
-                Don't have an account?{' '}
+                Don't have an account?{" "}
               </Text>
-              <Link href='/sign-up' className='text-second-200 font-semibold'>Sign Up</Link>
+              <Link href="/sign-up" className="text-second-200 font-semibold">
+                Sign Up
+              </Link>
             </View>
           </View>
         </ScrollView>
