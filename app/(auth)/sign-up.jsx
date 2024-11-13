@@ -70,11 +70,11 @@ const SignUpScreen = ({ navigation }) => {
         <ScrollView className="flex-1 px-6">
           {/* Logo Section */}
           <View className="items-center mt-8">
-            {/* <Image
-              source={require('../assets/logo.png.png')}
+            <Image
+              source={require("../../assets/logo.png.png")}
               className="w-20 h-20"
               resizeMode="contain"
-            /> */}
+            />
           </View>
 
           {/* Welcome Text */}
@@ -191,7 +191,7 @@ const SignUpScreen = ({ navigation }) => {
             {/* Sign Up Button */}
             <TouchableOpacity
               className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? "bg-second-200" : "bg-second-200"
+                loading ? "bg-fourth" : "bg-black"
               }`}
               onPress={handleSignUp}
               disabled={loading}

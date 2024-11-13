@@ -49,11 +49,11 @@ const SignInScreen = ({ navigation }) => {
         <ScrollView className="flex-1 px-6">
           {/* Logo Section */}
           <View className="items-center mt-10">
-            {/* <Image
-              source={require('../assets/logo.png.png')}
+            <Image
+              source={require("../../assets/logo.png.png")}
               className="w-20 h-20"
               resizeMode="contain"
-            /> */}
+            />
           </View>
 
           {/* Welcome Text */}
@@ -122,7 +122,7 @@ const SignInScreen = ({ navigation }) => {
             {/* Sign In Button */}
             <TouchableOpacity
               className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? "bg-fourth" : "bg-second-200"
+                loading ? "bg-fourth" : "bg-black"
               }`}
               onPress={handleSignIn}
               disabled={loading}
