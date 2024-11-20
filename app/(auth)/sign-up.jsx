@@ -224,7 +224,7 @@ const SignUpScreen = ({ navigation }) => {
               </Text>
               <Link
                 href="/sign-in"
-                className="text-green-600 text-sm font-semibold"
+                className="text-green-500 text-sm font-semibold"
               >
                 Sign In
               </Link>
