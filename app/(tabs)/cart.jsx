@@ -9,8 +9,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Cart = () => {
+  const insets = useSafeAreaInsets();
+
   // Sample cart data
   const [cartItems, setCartItems] = useState([
     {
@@ -146,6 +149,8 @@ const Cart = () => {
       {/* Header */}
       <View className="px-4 py-3 bg-white border-b border-gray-100">
         <View className="flex-row items-center justify-between">
+          {/* //here */}
+
           <View>
             <Text className="text-2xl font-bold text-gray-800">
               Shopping Cart
@@ -184,7 +189,11 @@ const Cart = () => {
       </ScrollView>
 
       {cartItems.length > 0 && (
-        <View className="bg-white p-4 pt-3">
+        <View
+          className="bg-white p-4 pt-3"
+          style={{ paddingBottom: 80 }}
+          // insets.bottom ||
+        >
           {/* Order Summary */}
           <Text className="text-lg font-semibold text-gray-800 mb-3">
             Order Summary
@@ -218,7 +227,7 @@ const Cart = () => {
 
           {/* Checkout Button */}
           <TouchableOpacity
-            className="bg-black py-4 rounded-xl items-center flex-row justify-center"
+            className="bg-black py-4 rounded-full items-center flex-row justify-center"
             onPress={() => console.log("Checkout pressed")}
           >
             <Ionicons

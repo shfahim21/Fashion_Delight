@@ -1,7 +1,8 @@
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 
 const TabIcon = ({ iconName, color, name, focused }) => {
   return (
@@ -29,15 +30,40 @@ const TabLayout = () => {
         tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopWidth: 1,
-          borderTopColor: "#F3F4F6",
+          position: "absolute",
+          bottom: 10,
+          left: 10,
+          right: 10,
+          backgroundColor:
+            Platform.OS === "ios"
+              ? "rgba(255,255,255,0.8)"
+              : "rgba(255,255,255,0.9)",
+          borderRadius: 30,
           height: 65,
-          paddingBottom: 10,
+          paddingBottom: 8,
           paddingTop: 5,
-          elevation: 0,
-          shadowOpacity: 0,
+          borderWidth: 2,
+          borderColor: "#F3F4F6",
+          elevation: 5,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          overflow: "hidden",
         },
+        tabBarBackground: () =>
+          Platform.OS === "ios" ? (
+            <BlurView
+              intensity={50}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+              }}
+            />
+          ) : null,
         headerShown: false,
       }}
     >

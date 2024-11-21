@@ -17,7 +17,7 @@ const Category = () => {
     { id: 1, name: "T-Shirts", icon: "shirt", items: "245" },
     { id: 2, name: "Pants", icon: "footsteps", items: "156" },
     { id: 3, name: "Dresses", icon: "woman", items: "198" },
-    { id: 4, name: "Jackets", icon: "jacket", items: "123" },
+    { id: 4, name: "Jackets", icon: "watch", items: "123" },
     { id: 5, name: "Shoes", icon: "footsteps", items: "312" },
     { id: 6, name: "Accessories", icon: "watch", items: "245" },
     { id: 7, name: "Sports", icon: "basketball", items: "176" },

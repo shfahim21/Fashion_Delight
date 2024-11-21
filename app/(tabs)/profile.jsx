@@ -33,12 +33,22 @@ const Profile = () => {
     >
       <Text className="text-xl mr-3">{icon}</Text>
       <Text className="flex-1 text-gray-700">{title}</Text>
-      {/* <Text className="text-third text-lg">›</Text> */}
     </TouchableOpacity>
   );
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
+      {/* Action Bar */}
+      <View className="bg-white py-4 px-4 flex-row justify-between items-center border-b border-gray-200">
+        <Text className="text-xl font-bold text-gray-800">Profile</Text>
+        <TouchableOpacity
+          className="bg-red-600 py-2 px-4 rounded-full"
+          onPress={() => console.log("Logout pressed")}
+        >
+          <Text className="text-white font-semibold">Logout</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView>
         {/* Header Section */}
         <View className="bg-white p-6 items-center">
@@ -86,16 +96,6 @@ const Profile = () => {
           {menuItems.map((item) => (
             <MenuItem key={item.id} title={item.title} icon={item.icon} />
           ))}
-        </View>
-
-        {/* Logout Button */}
-        <View className="p-4">
-          <TouchableOpacity
-            className="w-full bg-red-500 py-3 rounded-lg items-center"
-            onPress={() => console.log("Logout pressed")}
-          >
-            <Text className="text-white font-medium">Logout</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
