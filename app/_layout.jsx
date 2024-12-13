@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
+import Profile from "./(tabs)/profile";
 
 const RootLayout = () => {
   return (
     <Stack>
-      {/* screen names doesnt matter */}
+      {/* screen names doesn't matter */}
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      {/* <Stack.Screen name="sign-in" options={{ headerShown: false }} /> */}
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       {/* <Stack.Screen name="sign-up" options={{ headerShown: false }} /> */}
     </Stack>
   );

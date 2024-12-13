@@ -145,7 +145,7 @@ const Cart = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-50 min-h-[84vh] mt-10">
       {/* Header */}
       <View className="px-4 py-3 bg-white border-b border-gray-100">
         <View className="flex-row items-center justify-between">

@@ -37,7 +37,7 @@ const Profile = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-50 min-h-[84vh] mt-10">
       {/* Action Bar */}
       <View className="bg-white py-4 px-4 flex-row justify-between items-center border-b border-gray-200">
         <Text className="text-xl font-bold text-gray-800">Profile</Text>

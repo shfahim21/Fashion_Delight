@@ -75,7 +75,7 @@ const Category = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-50 min-h-[84vh] mt-10">
       {/* Header */}
       <View className="px-4 py-3 bg-white">
         <Text className="text-2xl font-bold text-gray-800">Categories</Text>
@@ -95,7 +95,7 @@ const Category = () => {
         </View>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={true}>
         {/* Popular Categories */}
         <View className="mt-4 px-4">
           <Text className="text-lg font-semibold text-gray-800 mb-3">
@@ -109,7 +109,7 @@ const Category = () => {
         </View>
 
         {/* All Categories Grid */}
-        <View className="mt-4 px-4 pb-4">
+        <View className="mt-4 px-4 pb-4 mb-52">
           <Text className="text-lg font-semibold text-gray-800 mb-3">
             All Categories
           </Text>
@@ -122,7 +122,7 @@ const Category = () => {
       </ScrollView>
 
       {/* Filter Button - Fixed at bottom */}
-      <View className="absolute bottom-4 right-4">
+      <View className="absolute bottom-24 right-4">
         <TouchableOpacity
           className="bg-black w-12 h-12 rounded-full items-center justify-center shadow-lg"
           onPress={() => console.log("Filter pressed")}
