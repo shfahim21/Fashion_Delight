@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -13,8 +13,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
+import { AuthContext } from "../../Context/AuthProvider";
 
 const SignUpScreen = ({ navigation }) => {
+  const { userSignUp, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -51,6 +53,16 @@ const SignUpScreen = ({ navigation }) => {
       setLoading(true);
       // Add your sign up logic here
       // Example: await auth.createUserWithEmailAndPassword(email, password);
+      userSignUp(formData.email, formData.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          setUser(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
 
       // Navigate to main app after successful sign up
       // navigation.replace('MainApp');
