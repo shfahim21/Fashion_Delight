@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useContext, useState } from "react";
 import {
   View,
@@ -57,6 +57,7 @@ const SignUpScreen = ({ navigation }) => {
         .then((userCredential) => {
           const user = userCredential.user;
           setUser(user);
+          router.push("/home");
         })
         .catch((error) => {
           const errorCode = error.code;

@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import React, { useState } from "react";
+import { Link, router } from "expo-router";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -13,8 +13,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
+import { AuthContext } from "../../Context/AuthProvider";
 
 const SignInScreen = ({ navigation }) => {
+  const { user, setUser, userSignIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,11 +30,15 @@ const SignInScreen = ({ navigation }) => {
 
     try {
       setLoading(true);
-      // Add your authentication logic here
-      // Example: await auth.signInWithEmailAndPassword(email, password);
-
-      // Navigate to main app after successful sign in
-      // navigation.replace('MainApp');
+      userSignIn(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          setUser(user);
+          router.push("/home");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message);
+        });
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {

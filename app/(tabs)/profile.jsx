@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,12 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { AuthContext } from "../../Context/AuthProvider";
+import { Link } from "expo-router";
 
 const Profile = () => {
+  const { user, userSignOut } = useContext(AuthContext);
+
   // Sample user data
   const userInfo = {
     name: "John Doe",
@@ -42,10 +46,24 @@ const Profile = () => {
       <View className="bg-white py-4 px-4 flex-row justify-between items-center border-b border-gray-200">
         <Text className="text-xl font-bold text-gray-800">Profile</Text>
         <TouchableOpacity
-          className="bg-red-600 py-2 px-4 rounded-full"
-          onPress={() => console.log("Logout pressed")}
+          className={`bg-red-600 py-2 px-4 rounded-full ${
+            user ? "" : "hidden"
+          }`}
+          onPress={() => {
+            userSignOut();
+          }}
         >
           <Text className="text-white font-semibold">Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className={`bg-black  py-2 px-4 rounded-full ${user ? "hidden" : ""}`}
+          onPress={() => {
+            userSignOut();
+          }}
+        >
+          <Link href="/(auth)/sign-in" className="text-white font-semibold ">
+            Login
+          </Link>
         </TouchableOpacity>
       </View>
 
@@ -67,7 +85,7 @@ const Profile = () => {
             </TouchableOpacity>
           </View>
           <Text className="text-2xl font-bold text-gray-800 mb-1">
-            {userInfo.name}
+            {user?.email || "UserName"}
           </Text>
           <Text className="text-gray-500">{userInfo.email}</Text>
         </View>
