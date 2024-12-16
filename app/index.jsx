@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../Context/AuthProvider";
 // import {}
+//
 export default function App() {
   const { user } = useContext(AuthContext);
 
