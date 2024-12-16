@@ -5,6 +5,29 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 
 const TabIcon = ({ iconName, color, name, focused }) => {
+  if (name === "Trends") {
+    return (
+      <View
+        className={`justify-center items-center py-1 border-2 rounded-full px-2 ${
+          focused ? "bg-red-500 border-red-500" : "border-red-500"
+        }`}
+      >
+        <Ionicons
+          name={focused ? iconName : `${iconName}-outline`}
+          size={35}
+          color={focused ? "white" : "red"}
+        />
+        {/* <Text
+          className={`${
+            focused ? "font-bold text-white" : "font-bold text-red-500"
+          } text-[10px] mt-1`}
+        >
+          {name}
+        </Text> */}
+      </View>
+    );
+  }
+
   return (
     <View className="justify-center items-center py-1">
       <Ionicons
@@ -27,7 +50,7 @@ const TabLayout = () => {
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "#007AFF",
+        tabBarActiveTintColor: "#000",
         tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
           position: "absolute",
@@ -36,16 +59,17 @@ const TabLayout = () => {
           right: 10,
           backgroundColor:
             Platform.OS === "ios"
-              ? "rgba(255,255,255,0.8)"
-              : "rgba(255,255,255,0.9)",
+              ? "rgba(255,255,255,1)"
+              : "rgba(255,255,255,1)",
           borderRadius: 30,
           height: 65,
-          paddingBottom: 8,
+          paddingBottom: 5,
           paddingTop: 5,
-          borderWidth: 2,
-          borderColor: "#F3F4F6",
+          borderWidth: 1,
+          borderColor: "#1235",
+          // borderColor: "#F33"
           elevation: 5,
-          shadowColor: "#000",
+          shadowColor: "#0000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 10,
@@ -54,7 +78,7 @@ const TabLayout = () => {
         tabBarBackground: () =>
           Platform.OS === "ios" ? (
             <BlurView
-              intensity={50}
+              intensity={100}
               style={{
                 position: "absolute",
                 top: 0,
@@ -97,6 +121,20 @@ const TabLayout = () => {
         }}
       />
 
+      <Tabs.Screen
+        name="trends"
+        options={{
+          title: "Trends",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              iconName="flame"
+              color={color}
+              name="Trends"
+              focused={focused}
+            />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="cart"
         options={{

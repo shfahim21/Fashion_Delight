@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -45,16 +46,111 @@ const Category = () => {
     },
   ];
 
+  // const CategoryCard = ({ name, icon, items }) => (
+  //   <TouchableOpacity
+  //     className="bg-white rounded-2xl p-1 flex-1 m-7 items-center justify-center shadow-sm"
+  //     style={{ minWidth: "45%" }}
+  //   >
+  //     <View className="bg-gray-50 p-5 rounded-full mb-2">
+  //       <Ionicons name={icon} size={24} color="#007AFF" />
+  //     </View>
+  //     <Text className="font-semibold text-gray-800 mb-1">{name}</Text>
+  //     <Text className="text-gray-500 text-sm">{items} items</Text>
+  //   </TouchableOpacity>
+  // );
+
+  // const CategoryCard = ({ name, icon, items }) => (
+  //   <TouchableOpacity
+  //     className="bg-white rounded-2xl overflow-hidden m-2 shadow-sm"
+  //     style={{
+  //       minWidth: "100%",
+  //       height: 180,
+  //     }}
+  //   >
+  //     {/* Background Image */}
+  //     <ImageBackground
+  //       source={{ uri: `https://picsum.photos/seed/${name}/300/200` }}
+  //       style={{
+  //         position: "absolute",
+  //         top: 0,
+  //         left: 0,
+  //         right: 0,
+  //         bottom: 0,
+  //         opacity: 1, // Very faded background
+  //       }}
+  //       blurRadius={1}
+  //     />
+
+  //     {/* Content Container */}
+  //     <View className="p-5 flex-1 justify-between">
+  //       {/* Icon Container - Left Aligned */}
+  //       <View className="self-start">
+  //         <View className="bg-white/70 p-3 rounded-full w-20 h-20 items-center justify-center">
+  //           <Ionicons name={icon} size={24} color="#007AFF" />
+  //         </View>
+  //       </View>
+
+  //       {/* Text Container - Left Aligned */}
+  //       <View className="self-start">
+  //         <Text className="font-bold text-gray-800 text-lg mb-1">{name}</Text>
+  //         <Text className="font-medium text-gray-600 text-sm">
+  //           {items} items
+  //         </Text>
+  //       </View>
+  //     </View>
+  //   </TouchableOpacity>
+  // );
+
   const CategoryCard = ({ name, icon, items }) => (
     <TouchableOpacity
-      className="bg-white rounded-2xl p-4 flex-1 m-1 items-center justify-center shadow-sm"
-      style={{ minWidth: "45%" }}
+      // here is anoterh modification
+      className="bg-white rounded-2xl overflow-hidden mr-4 mb-4 shadow-sm"
+      style={{
+        minWidth: "100%",
+        height: 120,
+      }}
     >
-      <View className="bg-gray-50 p-3 rounded-full mb-2">
-        <Ionicons name={icon} size={24} color="#007AFF" />
+      {/* Background Image */}
+      <ImageBackground
+        source={{
+          uri: `https://picsum.photos/seed/${name}/300/200`,
+        }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          opacity: 1,
+        }}
+        blurRadius={0}
+      />
+
+      {/* Overlay to ensure full background coverage */}
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(255,255,255,0)", // Dark overlay
+        }}
+      />
+
+      {/* Content Container */}
+      <View className="px-5 py-5 flex-1 justify-between ">
+        {/* Icon and Text Container - left justify */}
+        <View className="self-start">
+          <View className="bg-gray-700 p-3 rounded-full w-12 h-12 items-center justify-center">
+            <Ionicons name={icon} size={24} color="white" />
+          </View>
+          <View className="">
+            <Text className="font-black text-white text-xl">{name}</Text>
+            {/* <Text className="text-white/70 text-sm">{items} items</Text> */}
+          </View>
+        </View>
       </View>
-      <Text className="font-semibold text-gray-800 mb-1">{name}</Text>
-      <Text className="text-gray-500 text-sm">{items} items</Text>
     </TouchableOpacity>
   );
 
@@ -77,7 +173,7 @@ const Category = () => {
   return (
     <SafeAreaView className="flex-1 bg-gray-50 min-h-[84vh] mt-10">
       {/* Header */}
-      <View className="px-4 py-3 bg-white">
+      <View className="px-4 py-1 bg-white">
         <Text className="text-2xl font-bold text-gray-800">Categories</Text>
       </View>
 
@@ -109,7 +205,8 @@ const Category = () => {
         </View>
 
         {/* All Categories Grid */}
-        <View className="mt-4 px-4 pb-4 mb-52">
+        {/* here is the modificaion padding-botton-20  here is a problem*/}
+        <View className="mt-1 p-4 pb-4 mb-52">
           <Text className="text-lg font-semibold text-gray-800 mb-3">
             All Categories
           </Text>
@@ -120,16 +217,6 @@ const Category = () => {
           </View>
         </View>
       </ScrollView>
-
-      {/* Filter Button - Fixed at bottom */}
-      <View className="absolute bottom-24 right-4">
-        <TouchableOpacity
-          className="bg-black w-12 h-12 rounded-full items-center justify-center shadow-lg"
-          onPress={() => console.log("Filter pressed")}
-        >
-          <Ionicons name="funnel" size={20} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };

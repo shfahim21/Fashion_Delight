@@ -1,8 +1,19 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useContext, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthContext } from "../Context/AuthProvider";
+// import {}
 export default function App() {
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user]);
+
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white space-y-4">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
