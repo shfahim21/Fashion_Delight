@@ -40,6 +40,14 @@ export default function App() {
           >
             Go to home
           </Link>
+
+          <Link
+            href="/productPage"
+            className="text-white p-4 bg-black rounded-full font-semibold w-48 text-center mb-4"
+          >
+            PP
+          </Link>
+
           <StatusBar style="auto" />
         </View>
       </ScrollView>
