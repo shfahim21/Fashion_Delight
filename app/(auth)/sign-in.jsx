@@ -1,4 +1,4 @@
-import { Link, router } from "expo-router";
+// Import statements
 import React, { useContext, useState } from "react";
 import {
   View,
@@ -10,13 +10,15 @@ import {
   Platform,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
+import { Link } from "expo-router";
 
 const SignInScreen = ({ navigation }) => {
-  const { user, setUser, userSignIn } = useContext(AuthContext);
+  const { setUser, userSignIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,21 +26,14 @@ const SignInScreen = ({ navigation }) => {
 
   const handleSignIn = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
+      Alert.alert("Error", "Please fill in all fields.");
       return;
     }
 
     try {
       setLoading(true);
-      userSignIn(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setUser(user);
-          router.push("/home");
-        })
-        .catch((error) => {
-          Alert.alert("Error", error.message);
-        });
+      await userSignIn(email, password);
+      router.push("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
@@ -47,14 +42,17 @@ const SignInScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white min-h-[84vh] mt-10">
+    <SafeAreaView className="flex-1 bg-gray-50">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <ScrollView className="flex-1 px-6">
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          className="px-6"
+        >
           {/* Logo Section */}
-          <View className="items-center mt-10">
+          <View className="items-center mt-8">
             <Image
               source={require("../../assets/logo.png.png")}
               className="w-20 h-20"
@@ -64,7 +62,7 @@ const SignInScreen = ({ navigation }) => {
 
           {/* Welcome Text */}
           <View className="items-center mt-8">
-            <Text className="text-2xl font-bold text-gray-800">
+            <Text className="text-3xl font-bold text-gray-900">
               Welcome Back!
             </Text>
             <Text className="text-base text-gray-600 mt-2">
@@ -73,10 +71,10 @@ const SignInScreen = ({ navigation }) => {
           </View>
 
           {/* Form Section */}
-          <View className="mt-8">
+          <View className="mt-10">
             {/* Email Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon name="mail-outline" size={20} className="text-gray-500" />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4 bg-white">
+              <Icon name="mail-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Email"
@@ -90,12 +88,8 @@ const SignInScreen = ({ navigation }) => {
             </View>
 
             {/* Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12">
-              <Icon
-                name="lock-closed-outline"
-                size={20}
-                className="text-gray-500"
-              />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 bg-white">
+              <Icon name="lock-closed-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Password"
@@ -107,12 +101,12 @@ const SignInScreen = ({ navigation }) => {
               />
               <TouchableOpacity
                 onPress={() => setShowPassword(!showPassword)}
-                className="p-1"
+                className="p-2"
               >
                 <Icon
                   name={showPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
-                  className="text-gray-500"
+                  color="#6B7280"
                 />
               </TouchableOpacity>
             </View>
@@ -120,46 +114,50 @@ const SignInScreen = ({ navigation }) => {
             {/* Forgot Password */}
             <TouchableOpacity
               onPress={() => navigation.navigate("ForgotPassword")}
-              className="items-end mt-3"
+              className="items-end mt-2"
             >
-              <Text className="text-sm text-third">Forgot Password?</Text>
+              <Text className="text-sm text-blue-500">Forgot Password?</Text>
             </TouchableOpacity>
 
             {/* Sign In Button */}
             <TouchableOpacity
-              className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? "bg-fourth" : "bg-black"
+              className={`h-12 rounded-lg items-center justify-center mt-6 ${
+                loading ? "bg-gray-400" : "bg-gray-900"
               }`}
               onPress={handleSignIn}
               disabled={loading}
             >
-              <Text className="text-white text-base font-semibold">
-                {loading ? "Signing in..." : "Sign In"}
-              </Text>
+              {loading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text className="text-white text-base font-semibold">
+                  Sign In
+                </Text>
+              )}
             </TouchableOpacity>
 
             {/* Social Sign In */}
-            <View className="items-center mt-8">
+            <View className="items-center mt-10">
               <Text className="text-gray-500 text-sm mb-4">OR</Text>
               <View className="flex-row justify-center space-x-6">
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
                   <Icon name="logo-google" size={24} color="#DB4437" />
                 </TouchableOpacity>
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
                   <Icon name="logo-facebook" size={24} color="#4267B2" />
                 </TouchableOpacity>
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
-                  <Icon name="logo-apple" size={24} color="#000" />
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
+                  <Icon name="logo-apple" size={24} color="#000000" />
                 </TouchableOpacity>
               </View>
             </View>
 
             {/* Sign Up Link */}
-            <View className="flex-row justify-center mt-6 mb-8">
+            <View className="flex-row justify-center mt-8 mb-6">
               <Text className="text-gray-600 text-sm">
                 Don't have an account?{" "}
               </Text>
-              <Link href="/sign-up" className="text-second-200 font-semibold">
+              <Link href="/sign-up" className="text-blue-500 font-semibold">
                 Sign Up
               </Link>
             </View>

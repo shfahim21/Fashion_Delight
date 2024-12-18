@@ -1,4 +1,4 @@
-import { Link, router } from "expo-router";
+// Import statements
 import React, { useContext, useState } from "react";
 import {
   View,
@@ -10,10 +10,12 @@ import {
   Platform,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
+import { Link } from "expo-router";
 
 const SignUpScreen = ({ navigation }) => {
   const { userSignUp, setUser } = useContext(AuthContext);
@@ -35,38 +37,25 @@ const SignUpScreen = ({ navigation }) => {
       !formData.password ||
       !formData.confirmPassword
     ) {
-      Alert.alert("Error", "Please fill in all fields");
+      Alert.alert("Error", "Please fill in all fields.");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+      Alert.alert("Error", "Passwords do not match.");
       return;
     }
 
-    if (formData.password.length < 8) {
-      Alert.alert("Error", "Password must be at least 8 characters long");
+    if (formData.password.length < 4) {
+      Alert.alert("Error", "Password must be at least 4 characters long.");
       return;
     }
 
     try {
       setLoading(true);
-      // Add your sign up logic here
-      // Example: await auth.createUserWithEmailAndPassword(email, password);
-      userSignUp(formData.email, formData.password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setUser(user);
-          router.push("/home");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
-
-      // Navigate to main app after successful sign up
-      // navigation.replace('MainApp');
+      // Sign up logic
+      await userSignUp(formData.email, formData.password);
+      router.push("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
@@ -75,12 +64,15 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white min-h-[100vh] pt-10">
+    <SafeAreaView className="flex-1 bg-gray-50">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <ScrollView className="flex-1 px-6">
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          className="px-6"
+        >
           {/* Logo Section */}
           <View className="items-center mt-8">
             <Image
@@ -92,7 +84,7 @@ const SignUpScreen = ({ navigation }) => {
 
           {/* Welcome Text */}
           <View className="items-center mt-6">
-            <Text className="text-2xl font-bold text-gray-800">
+            <Text className="text-3xl font-bold text-gray-900">
               Create Account
             </Text>
             <Text className="text-base text-gray-600 mt-2">
@@ -101,10 +93,10 @@ const SignUpScreen = ({ navigation }) => {
           </View>
 
           {/* Form Section */}
-          <View className="mt-8">
+          <View className="mt-10">
             {/* Full Name Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon name="person-outline" size={20} className="text-gray-500" />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4 bg-white">
+              <Icon name="person-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Full Name"
@@ -118,8 +110,8 @@ const SignUpScreen = ({ navigation }) => {
             </View>
 
             {/* Email Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon name="mail-outline" size={20} className="text-gray-500" />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4 bg-white">
+              <Icon name="mail-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Email"
@@ -135,12 +127,8 @@ const SignUpScreen = ({ navigation }) => {
             </View>
 
             {/* Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon
-                name="lock-closed-outline"
-                size={20}
-                className="text-gray-500"
-              />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 mb-4 bg-white">
+              <Icon name="lock-closed-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Password"
@@ -154,23 +142,19 @@ const SignUpScreen = ({ navigation }) => {
               />
               <TouchableOpacity
                 onPress={() => setShowPassword(!showPassword)}
-                className="p-1"
+                className="p-2"
               >
                 <Icon
                   name={showPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
-                  className="text-gray-500"
+                  color="#6B7280"
                 />
               </TouchableOpacity>
             </View>
 
             {/* Confirm Password Input */}
-            <View className="flex-row items-center border border-gray-300 rounded-full px-4 h-12 mb-4">
-              <Icon
-                name="lock-closed-outline"
-                size={20}
-                className="text-gray-500"
-              />
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-4 h-12 bg-white">
+              <Icon name="lock-closed-outline" size={20} color="#6B7280" />
               <TextInput
                 className="flex-1 ml-3 text-base text-gray-800"
                 placeholder="Confirm Password"
@@ -184,60 +168,64 @@ const SignUpScreen = ({ navigation }) => {
               />
               <TouchableOpacity
                 onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="p-1"
+                className="p-2"
               >
                 <Icon
                   name={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
-                  className="text-gray-500"
+                  color="#6B7280"
                 />
               </TouchableOpacity>
             </View>
 
             {/* Terms and Conditions */}
-            <Text className="text-sm text-gray-600 text-center mt-2">
+            <Text className="text-sm text-gray-600 text-center mt-4">
               By signing up, you agree to our{" "}
-              <Text className="text-green-500">Terms of Service</Text> and{" "}
-              <Text className="text-green-500">Privacy Policy</Text>
+              <Text className="text-blue-500">Terms of Service</Text> and{" "}
+              <Text className="text-blue-500">Privacy Policy</Text>.
             </Text>
 
             {/* Sign Up Button */}
             <TouchableOpacity
-              className={`h-12 rounded-full items-center justify-center mt-6 ${
-                loading ? "bg-fourth" : "bg-black"
+              className={`h-12 rounded-lg items-center justify-center mt-6 ${
+                loading ? "bg-gray-400" : "bg-gray-900"
               }`}
               onPress={handleSignUp}
               disabled={loading}
             >
-              <Text className="text-white text-base font-semibold">
-                {loading ? "Creating Account..." : "Sign Up"}
-              </Text>
+              {loading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text className="text-white text-base font-semibold">
+                  Sign Up
+                </Text>
+              )}
             </TouchableOpacity>
 
             {/* Social Sign Up */}
-            <View className="items-center mt-6">
+            <View className="items-center mt-8">
               <Text className="text-gray-500 text-sm mb-4">OR</Text>
               <View className="flex-row justify-center space-x-6">
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
                   <Icon name="logo-google" size={24} color="#DB4437" />
                 </TouchableOpacity>
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
                   <Icon name="logo-facebook" size={24} color="#4267B2" />
                 </TouchableOpacity>
-                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center">
-                  <Icon name="logo-apple" size={24} color="#000" />
+                <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
+                  <Icon name="logo-apple" size={24} color="#000000" />
                 </TouchableOpacity>
               </View>
             </View>
 
             {/* Sign In Link */}
-            <View className="flex-row justify-center mt-6 mb-8">
+            <View className="flex-row justify-center mt-8 mb-6">
               <Text className="text-gray-600 text-sm">
                 Already have an account?{" "}
               </Text>
               <Link
                 href="/sign-in"
-                className="text-green-500 text-sm font-semibold"
+                className="text-blue-500 text-sm font-semibold"
               >
                 Sign In
               </Link>
