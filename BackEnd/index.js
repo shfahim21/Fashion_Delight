@@ -7,13 +7,123 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const uri =
+  "mongodb+srv://FD:lL4w1ZWEp0Td5bRo@cluster0.0rkhh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
 });
 
-// Example route
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from the backend!" });
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+
+    const database = client.db("FD");
+    // collection for users
+    const users = database.collection("users");
+    // collection for products
+    const products = database.collection("products");
+    // collection for orders
+    const orders = database.collection("orders");
+
+    // create a new user
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await users.insertOne(user);
+      res.send(result);
+    });
+
+    // get all users
+    app.get("/users", async (req, res) => {
+      const result = await users.find().toArray();
+      res.send(result);
+    });
+
+    // get a single user
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await users.findOne(query);
+      res.send(result);
+    });
+
+    // create a new product
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      const result = await products.insertOne(product);
+      res.send(result);
+    });
+
+    // get all products
+    app.get("/products", async (req, res) => {
+      const result = await products.find().toArray();
+      res.send(result);
+    });
+
+    // get a single product
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await products.findOne(query);
+      res.send(result);
+    });
+
+    // create a new order
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orders.insertOne(order);
+      res.send(result);
+    });
+
+    // get all orders
+    app.get("/orders", async (req, res) => {
+      const result = await orders.find().toArray();
+      res.send(result);
+    });
+
+    // get a single order
+    app.get("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await orders.findOne(query);
+      res.send(result);
+    });
+
+    // update a single order
+    app.put("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const order = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: order.status,
+        },
+      };
+      const result = await orders.updateOne(query, updateDoc);
+      res.send(result);
+    });
+
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.listen(port, () => {
