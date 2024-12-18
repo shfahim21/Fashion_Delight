@@ -14,6 +14,15 @@ export default function App() {
       router.push("/home");
     }
   }, [user]);
+  // fetching test
+  useEffect(() => {
+    fetch("https://movie-server-zeta.vercel.app/movies")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error("Error fetching movies:", error));
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white space-y-4">
