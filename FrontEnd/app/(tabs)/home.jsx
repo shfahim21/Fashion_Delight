@@ -160,7 +160,7 @@ const home = () => {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-50 mt-10 mb-16">
       <ScrollView className="flex-1">
         {/* Search Bar */}
         <View className="px-4 py-3">

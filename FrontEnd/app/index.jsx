@@ -19,7 +19,7 @@ export default function App() {
     fetch("https://movie-server-zeta.vercel.app/movies")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => console.error("Error fetching movies:", error));
   }, []);
@@ -55,6 +55,13 @@ export default function App() {
             className="text-white p-4 bg-black rounded-full font-semibold w-48 text-center mb-4"
           >
             PP
+          </Link>
+
+          <Link
+            href="/UpdateProfile"
+            className="text-white p-4 bg-black rounded-full font-semibold w-48 text-center mb-4"
+          >
+            Update Profile
           </Link>
 
           <StatusBar style="auto" />
