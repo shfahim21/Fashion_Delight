@@ -10,11 +10,10 @@ import {
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Cart = () => {
   const insets = useSafeAreaInsets();
-
-  // Sample cart data
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -45,6 +44,9 @@ const Cart = () => {
     },
   ]);
 
+  const getSubtotal = () => {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  };
   const updateQuantity = (id, change) => {
     setCartItems(
       cartItems.map((item) => {
@@ -78,169 +80,179 @@ const Cart = () => {
     ]);
   };
 
-  const getSubtotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
-
   const CartItem = ({ item }) => (
-    <View className="bg-white p-4 mb-2 rounded-xl flex-row shadow-sm">
-      <Image
-        source={{ uri: item.image }}
-        className="w-24 h-24 rounded-lg"
-        resizeMode="cover"
-      />
-      <View className="flex-1 ml-4">
-        <View className="flex-row justify-between items-start">
-          <Text className="text-gray-800 font-semibold flex-1 mr-2">
-            {item.name}
-          </Text>
-          <TouchableOpacity
-            onPress={() => removeItem(item.id)}
-            className="p-1 rounded-full bg-gray-50"
-          >
-            <Ionicons name="trash-outline" size={20} color="#EF4444" />
-          </TouchableOpacity>
-        </View>
-
-        <View className="flex-row mt-1">
-          <View className="flex-row items-center">
-            <Ionicons name="resize-outline" size={14} color="#6B7280" />
-            <Text className="text-gray-500 text-sm ml-1">
-              Size: {item.size}
-            </Text>
-          </View>
-          <View className="flex-row items-center ml-4">
-            <Ionicons name="color-palette-outline" size={14} color="#6B7280" />
-            <Text className="text-gray-500 text-sm ml-1">
-              Color: {item.color}
+    <View className="bg-white rounded-2xl overflow-hidden mb-4 shadow-sm">
+      <View className="p-4 flex-row">
+        {/* Product Image with Badge */}
+        <View className="relative">
+          <Image
+            source={{ uri: item.image }}
+            className="w-24 h-24 rounded-xl"
+            resizeMode="cover"
+          />
+          <View className="absolute top-0 right-0 bg-black/70 px-2 py-1 rounded-bl-xl rounded-tr-xl">
+            <Text className="text-white text-xs font-medium">
+              ${item.price}
             </Text>
           </View>
         </View>
 
-        <View className="flex-row justify-between items-center mt-2">
-          <Text className="text-lg font-semibold text-gray-800">
-            ${(item.price * item.quantity).toFixed(2)}
-          </Text>
+        {/* Product Details */}
+        <View className="flex-1 ml-4 justify-between">
+          <View>
+            <View className="flex-row justify-between items-start">
+              <Text className="text-gray-800 font-bold text-lg flex-1 mr-2">
+                {item.name}
+              </Text>
+              <TouchableOpacity
+                onPress={() => removeItem(item.id)}
+                className="p-2 rounded-full bg-red-50"
+              >
+                <Ionicons name="trash-outline" size={18} color="#EF4444" />
+              </TouchableOpacity>
+            </View>
 
-          <View className="flex-row items-center bg-gray-100 rounded-lg">
-            <TouchableOpacity
-              onPress={() => updateQuantity(item.id, -1)}
-              className="p-2"
-            >
-              <Ionicons name="remove-outline" size={16} color="#374151" />
-            </TouchableOpacity>
+            {/* Product Attributes */}
+            <View className="flex-row mt-1 space-x-3">
+              <View className="bg-gray-100 px-3 py-1 rounded-full flex-row items-center">
+                <Text className="text-gray-600 text-xs">Size: {item.size}</Text>
+              </View>
+              <View className="bg-gray-100 px-3 py-1 rounded-full flex-row items-center">
+                <View className="w-2 h-2 rounded-full bg-black mr-1" />
+                <Text className="text-gray-600 text-xs">{item.color}</Text>
+              </View>
+            </View>
+          </View>
 
-            <Text className="px-3 font-medium">{item.quantity}</Text>
-
-            <TouchableOpacity
-              onPress={() => updateQuantity(item.id, 1)}
-              className="p-2"
-            >
-              <Ionicons name="add-outline" size={16} color="#374151" />
-            </TouchableOpacity>
+          {/* Quantity Controls */}
+          <View className="flex-row items-center justify-between mt-2">
+            <View className="flex-row items-center bg-gray-100 rounded-full">
+              <TouchableOpacity
+                onPress={() => updateQuantity(item.id, -1)}
+                className="w-8 h-8 items-center justify-center"
+              >
+                <Ionicons name="remove" size={16} color="#374151" />
+              </TouchableOpacity>
+              <Text className="px-3 font-bold">{item.quantity}</Text>
+              <TouchableOpacity
+                onPress={() => updateQuantity(item.id, 1)}
+                className="w-8 h-8 items-center justify-center"
+              >
+                <Ionicons name="add" size={16} color="#374151" />
+              </TouchableOpacity>
+            </View>
+            <Text className="font-bold text-lg">
+              ${(item.price * item.quantity).toFixed(2)}
+            </Text>
           </View>
         </View>
       </View>
     </View>
   );
 
-  return (
-    <SafeAreaView className="flex-1 min-h-[84vh] mt-10">
-      {/* Header */}
-      <View className="px-4 py-3 border-b border-gray-100">
-        <View className="flex-row items-center justify-between">
-          {/* //here */}
+  const EmptyCart = () => (
+    <View className="flex-1 items-center justify-center py-20">
+      <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
+        <Ionicons name="cart-outline" size={40} color="#9CA3AF" />
+      </View>
+      <Text className="text-gray-800 text-xl font-bold mb-2">
+        Cart is Empty
+      </Text>
+      <Text className="text-gray-500 text-center mb-6 px-10">
+        Looks like you haven't added anything to your cart yet
+      </Text>
+      <TouchableOpacity
+        className="bg-black px-8 py-3 rounded-full"
+        onPress={() => console.log("Continue shopping")}
+      >
+        <Text className="text-white font-semibold">Start Shopping</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
+  return (
+    <SafeAreaView className="flex-1 bg-gray-50">
+      {/* Header */}
+      <View className="px-4 pt-12 pb-1">
+        <View className="flex-row items-center justify-between">
           <View>
-            <Text className="text-2xl font-bold text-gray-800">
-              Shopping Cart
-            </Text>
-            <Text className="text-gray-500 mt-1">
+            <Text className="text-2xl font-bold text-gray-800">My Cart</Text>
+            <Text className="text-gray-500">
               {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
             </Text>
           </View>
-          <TouchableOpacity className="p-2">
-            <Ionicons name="heart-outline" size={24} color="#374151" />
-          </TouchableOpacity>
+          {cartItems.length > 0 && (
+            <TouchableOpacity
+              className="bg-gray-100 p-2 rounded-full"
+              onPress={() => Alert.alert("Clear cart?")}
+            >
+              <Ionicons name="trash-outline" size={20} color="#374151" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
-      <ScrollView className="flex-1 px-4 pt-4">
-        {cartItems.map((item) => (
-          <CartItem key={item.id} item={item} />
-        ))}
+      {cartItems.length === 0 ? (
+        <EmptyCart />
+      ) : (
+        <>
+          <ScrollView className="flex-1 px-4">
+            {cartItems.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
 
-        {cartItems.length === 0 && (
-          <View className="items-center justify-center py-8">
-            <Ionicons name="bag-handle-outline" size={64} color="#9CA3AF" />
-            <Text className="text-gray-500 mt-4 text-lg">
-              Your cart is empty
-            </Text>
+            {/* Promo Code */}
+            <View className="bg-white p-4 rounded-2xl mb-4">
+              <Text className="font-semibold text-gray-800 mb-2">
+                Promo Code
+              </Text>
+              <View className="flex-row">
+                <View className="flex-1 bg-gray-100 rounded-l-xl px-4 py-3">
+                  <Text className="text-gray-500">Enter promo code</Text>
+                </View>
+                <TouchableOpacity className="bg-black px-6 rounded-r-xl items-center justify-center">
+                  <Text className="text-white font-medium">Apply</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+
+          {/* Checkout Section */}
+          <View
+            className="bg-white p-6"
+            style={{ paddingBottom: insets.bottom + 20 }}
+          >
+            <View className="flex-row justify-between mb-4">
+              <Text className="text-gray-500">Subtotal</Text>
+              <Text className="font-semibold">${getSubtotal().toFixed(2)}</Text>
+            </View>
+            <View className="flex-row justify-between mb-4">
+              <Text className="text-gray-500">Shipping</Text>
+              <Text className="font-semibold">$5.00</Text>
+            </View>
+            {/* <View className="flex-row justify-between pb-4 mb-4 border-b border-gray-100">
+              <Text className="text-gray-500">Tax</Text>
+              <Text className="font-semibold">
+                ${(getSubtotal() * 0.1).toFixed(2)}
+              </Text>
+            </View> */}
+            <View className="flex-row justify-between mb-6">
+              <Text className="text-lg font-bold">Total</Text>
+              <Text className="text-lg font-bold">
+                ${(getSubtotal() + 5 + getSubtotal() * 0.1).toFixed(2)}
+              </Text>
+            </View>
+
             <TouchableOpacity
-              className="mt-4 bg-gray-100 px-6 py-3 rounded-xl"
-              onPress={() => console.log("Continue shopping")}
+              className="bg-black py-4 rounded-2xl items-center mb-16"
+              onPress={() => console.log("Checkout")}
             >
-              <Text className="text-gray-700 font-medium">
-                Continue Shopping
+              <Text className="text-white font-bold text-lg">
+                Proceed to Checkout
               </Text>
             </TouchableOpacity>
           </View>
-        )}
-      </ScrollView>
-
-      {cartItems.length > 0 && (
-        <View
-          className="bg-white p-4 pt-3"
-          style={{ paddingBottom: 80 }}
-          // insets.bottom ||
-        >
-          {/* Order Summary */}
-          <Text className="text-lg font-semibold text-gray-800 mb-3">
-            Order Summary
-          </Text>
-          <View className="border-b border-gray-100 pb-3">
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-gray-500">Subtotal</Text>
-              <Text className="text-gray-800 font-medium">
-                ${getSubtotal().toFixed(2)}
-              </Text>
-            </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-gray-500">Shipping</Text>
-              <Text className="text-gray-800 font-medium">$5.00</Text>
-            </View>
-            <View className="flex-row justify-between">
-              <Text className="text-gray-500">Tax (10%)</Text>
-              <Text className="text-gray-800 font-medium">
-                ${(getSubtotal() * 0.1).toFixed(2)}
-              </Text>
-            </View>
-          </View>
-
-          {/* Total */}
-          <View className="flex-row justify-between items-center pt-3 mb-4">
-            <Text className="text-gray-800 text-lg font-semibold">Total</Text>
-            <Text className="text-xl font-bold text-gray-800">
-              ${(getSubtotal() + 5 + getSubtotal() * 0.1).toFixed(2)}
-            </Text>
-          </View>
-
-          {/* Checkout Button */}
-          <TouchableOpacity
-            className="bg-black py-4 rounded-full items-center flex-row justify-center"
-            onPress={() => console.log("Checkout pressed")}
-          >
-            <Ionicons
-              name="cart-outline"
-              size={20}
-              color="white"
-              className="mr-2"
-            />
-            <Text className="text-white font-semibold text-lg ml-2">
-              Proceed to Checkout
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </>
       )}
     </SafeAreaView>
   );

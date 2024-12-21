@@ -10,207 +10,155 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Category = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [
-    { id: 1, name: "T-Shirts", icon: "shirt", items: "245" },
-    { id: 2, name: "Pants", icon: "footsteps", items: "156" },
-    { id: 3, name: "Dresses", icon: "woman", items: "198" },
-    { id: 4, name: "Jackets", icon: "watch", items: "123" },
-    { id: 5, name: "Shoes", icon: "footsteps", items: "312" },
-    { id: 6, name: "Accessories", icon: "watch", items: "245" },
-    { id: 7, name: "Sports", icon: "basketball", items: "176" },
-    { id: 8, name: "Kids", icon: "people", items: "198" },
-  ];
-
-  const popularCategories = [
     {
       id: 1,
-      name: "Summer Collection",
-      image: "https://via.placeholder.com/150",
-      items: "1.2k",
+      name: "Electronics",
+      icon: "phone-portrait",
+      items: "245",
+      color: ["#4F46E5", "#7C3AED"],
     },
     {
       id: 2,
-      name: "Winter Wear",
-      image: "https://via.placeholder.com/150",
-      items: "876",
+      name: "Fashion",
+      icon: "shirt",
+      items: "156",
+      color: ["#F59E0B", "#EF4444"],
     },
     {
       id: 3,
-      name: "New Arrivals",
-      image: "https://via.placeholder.com/150",
-      items: "543",
+      name: "Home",
+      icon: "home",
+      items: "198",
+      color: ["#10B981", "#059669"],
+    },
+    {
+      id: 4,
+      name: "Sports",
+      icon: "basketball",
+      items: "123",
+      color: ["#3B82F6", "#2563EB"],
+    },
+    {
+      id: 5,
+      name: "Beauty",
+      icon: "sparkles",
+      items: "312",
+      color: ["#EC4899", "#DB2777"],
+    },
+    {
+      id: 6,
+      name: "Books",
+      icon: "book",
+      items: "245",
+      color: ["#8B5CF6", "#6D28D9"],
+    },
+    {
+      id: 7,
+      name: "Toys",
+      icon: "game-controller",
+      items: "176",
+      color: ["#F97316", "#EA580C"],
+    },
+    {
+      id: 8,
+      name: "Automotive",
+      icon: "car-sport",
+      items: "198",
+      color: ["#64748B", "#475569"],
     },
   ];
 
-  // const CategoryCard = ({ name, icon, items }) => (
-  //   <TouchableOpacity
-  //     className="bg-white rounded-2xl p-1 flex-1 m-7 items-center justify-center shadow-sm"
-  //     style={{ minWidth: "45%" }}
-  //   >
-  //     <View className="bg-gray-50 p-5 rounded-full mb-2">
-  //       <Ionicons name={icon} size={24} color="#007AFF" />
-  //     </View>
-  //     <Text className="font-semibold text-gray-800 mb-1">{name}</Text>
-  //     <Text className="text-gray-500 text-sm">{items} items</Text>
-  //   </TouchableOpacity>
-  // );
-
-  // const CategoryCard = ({ name, icon, items }) => (
-  //   <TouchableOpacity
-  //     className="bg-white rounded-2xl overflow-hidden m-2 shadow-sm"
-  //     style={{
-  //       minWidth: "100%",
-  //       height: 180,
-  //     }}
-  //   >
-  //     {/* Background Image */}
-  //     <ImageBackground
-  //       source={{ uri: `https://picsum.photos/seed/${name}/300/200` }}
-  //       style={{
-  //         position: "absolute",
-  //         top: 0,
-  //         left: 0,
-  //         right: 0,
-  //         bottom: 0,
-  //         opacity: 1, // Very faded background
-  //       }}
-  //       blurRadius={1}
-  //     />
-
-  //     {/* Content Container */}
-  //     <View className="p-5 flex-1 justify-between">
-  //       {/* Icon Container - Left Aligned */}
-  //       <View className="self-start">
-  //         <View className="bg-white/70 p-3 rounded-full w-20 h-20 items-center justify-center">
-  //           <Ionicons name={icon} size={24} color="#007AFF" />
-  //         </View>
-  //       </View>
-
-  //       {/* Text Container - Left Aligned */}
-  //       <View className="self-start">
-  //         <Text className="font-bold text-gray-800 text-lg mb-1">{name}</Text>
-  //         <Text className="font-medium text-gray-600 text-sm">
-  //           {items} items
-  //         </Text>
-  //       </View>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
-
-  const CategoryCard = ({ name, icon, items }) => (
-    <TouchableOpacity
-      // here is anoterh modification
-      className="bg-white rounded-2xl overflow-hidden mr-4 mb-4 shadow-sm"
-      style={{
-        minWidth: "100%",
-        height: 120,
-      }}
-    >
-      {/* Background Image */}
-      <ImageBackground
-        source={{
-          uri: `https://picsum.photos/seed/${name}/300/200`,
-        }}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 1,
-        }}
-        blurRadius={0}
-      />
-
-      {/* Overlay to ensure full background coverage */}
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(255,255,255,0)", // Dark overlay
-        }}
-      />
-
-      {/* Content Container */}
-      <View className="px-5 py-5 flex-1 justify-between ">
-        {/* Icon and Text Container - left justify */}
-        <View className="self-start">
-          <View className="bg-gray-700 p-3 rounded-full w-12 h-12 items-center justify-center">
+  const CategoryCard = ({ name, icon, items, color }) => (
+    <TouchableOpacity className="w-[48%] mb-4">
+      <LinearGradient
+        colors={color}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        className="rounded-2xl p-4 h-44"
+      >
+        <View className="flex-1 justify-between">
+          <View className="bg-white/20 self-start p-3 rounded-full">
             <Ionicons name={icon} size={24} color="white" />
           </View>
-          <View className="">
-            <Text className="font-black text-white text-xl">{name}</Text>
-            {/* <Text className="text-white/70 text-sm">{items} items</Text> */}
+
+          <View>
+            <Text className="text-white text-lg font-bold mb-1">{name}</Text>
+            <View className="flex-row items-center">
+              <Text className="text-white/80 text-sm">{items} Products</Text>
+              <View className="flex-row items-center ml-auto">
+                <Text className="text-white mr-1">View</Text>
+                <Ionicons name="arrow-forward" size={16} color="white" />
+              </View>
+            </View>
           </View>
         </View>
-      </View>
+      </LinearGradient>
     </TouchableOpacity>
   );
 
-  const PopularCategoryCard = ({ name, image, items }) => (
-    <TouchableOpacity className="mr-4 w-40">
-      <View className="bg-white rounded-xl overflow-hidden shadow-sm">
-        <Image
-          source={{ uri: image }}
-          className="w-full h-24"
-          resizeMode="cover"
-        />
-        <View className="p-2">
-          <Text className="font-medium text-gray-800">{name}</Text>
-          <Text className="text-gray-500 text-xs">{items} items</Text>
-        </View>
-      </View>
+  const FeaturedCategory = () => (
+    <TouchableOpacity className="mb-4">
+      <ImageBackground
+        source={{ uri: "https://picsum.photos/800/300" }}
+        className="h-40 rounded-2xl overflow-hidden"
+      >
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          className="flex-1 justify-end p-4"
+        >
+          <Text className="text-white text-2xl font-bold mb-1">
+            Summer Sale
+          </Text>
+          <Text className="text-white/80 mb-2">
+            Up to 50% off on selected items
+          </Text>
+          <View className="flex-row items-center">
+            <TouchableOpacity className="bg-white px-4 py-2 rounded-full">
+              <Text className="font-semibold">Shop Now</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
+      </ImageBackground>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView className="flex-1 min-h-[84vh] mt-10">
-      {/* Header */}
-      <View className="px-4 py-1">
-        <Text className="text-2xl font-bold text-gray-800">Categories</Text>
-      </View>
-
-      {/* Search Bar */}
-      <View className="px-4 py-3">
-        <View className="flex-row items-center bg-white px-4 py-2 rounded-xl">
-          <Ionicons name="search" size={20} color="#6B7280" />
-          <TextInput
-            placeholder="Search categories"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            className="flex-1 ml-2 text-gray-800"
-            placeholderTextColor="#6B7280"
-          />
-        </View>
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={true}>
-        {/* Popular Categories */}
-        <View className="mt-4 px-4">
-          <Text className="text-lg font-semibold text-gray-800 mb-3">
-            Popular Categories
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {popularCategories.map((category) => (
-              <PopularCategoryCard key={category.id} {...category} />
-            ))}
-          </ScrollView>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView className="flex-1 pt-12 mb-10">
+        {/* Header */}
+        <View className="px-4 mb-4">
+          <Text className="text-3xl font-bold text-gray-800">Categories</Text>
+          {/* <Text className="text-gray-500 mt-1">Find everything you need</Text> */}
         </View>
 
-        {/* All Categories Grid */}
-        {/* here is the modificaion padding-botton-20  here is a problem*/}
-        <View className="mt-1 p-4 pb-4 mb-52">
-          <Text className="text-lg font-semibold text-gray-800 mb-3">
-            All Categories
-          </Text>
-          <View className="flex-row flex-wrap justify-between">
+        {/* Search Bar */}
+        <View className="px-4 mb-6">
+          <View className="flex-row items-center bg-white px-4 py-3 rounded-xl shadow-sm">
+            <Ionicons name="search" size={20} color="#6B7280" />
+            <TextInput
+              placeholder="Search categories"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              className="flex-1 ml-2 text-base"
+              placeholderTextColor="#6B7280"
+            />
+          </View>
+        </View>
+
+        {/* Featured Category */}
+        <View className="px-4">
+          <FeaturedCategory />
+        </View>
+
+        {/* Categories Grid */}
+        <View className="px-4 pb-20">
+          <View className="flex-row justify-between flex-wrap">
             {categories.map((category) => (
               <CategoryCard key={category.id} {...category} />
             ))}

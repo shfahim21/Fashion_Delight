@@ -12,6 +12,8 @@ import {
 import { AuthContext } from "../../Context/AuthProvider";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import { Button } from "react-native-web";
+import { router } from "expo-router";
 
 const home = () => {
   //no chng
@@ -159,86 +161,159 @@ const home = () => {
       rating: 4.5,
     },
   ];
-
+  const banners = [
+    {
+      id: 1,
+      image: "https://picsum.photos/400/200",
+      title: "Special Offer",
+    },
+    {
+      id: 2,
+      image: "https://picsum.photos/400/201",
+      title: "New Arrivals",
+    },
+    {
+      id: 3,
+      image: "https://picsum.photos/400/202",
+      title: "Limited Time Deal",
+    },
+  ];
   return (
     <SafeAreaView className="flex-1 bg-gray-50 mt-10 mb-16">
       <ScrollView className="flex-1">
-        {/* Search Bar */}
-        <View className="px-4 py-3">
-          <View className="flex-row items-center bg-white rounded-full px-4 py-2 shadow-sm">
+        {/* Header Section */}
+        <View className="px-4 pt-2 pb-4">
+          {/* Search Bar */}
+          <View className="flex-row items-center bg-white rounded-2xl px-4 py-3 shadow-sm">
             <Ionicons name="search" size={20} color="#666" />
             <TextInput
               placeholder="Search products..."
-              className="flex-1 ml-2"
+              className="flex-1 ml-2 text-base"
               placeholderTextColor="#666"
             />
           </View>
         </View>
-        {/* Categories Grid
-        <View className="px-4 py-3">
-          <Text className="text-lg font-bold mb-3">Categories</Text>
-          <View className="flex-row flex-wrap">
-            {categories.map((category, index) => (
-              <CategoryCard key={index} {...category} />
-            ))}
-          </View>
-        </View> */}
-        {/* Popular Categories */}
-        {/* <View className="py-3">
-          <Text className="text-lg font-bold px-4 mb-3">
-            Popular Categories
-          </Text>
+
+        {/* Banner Section */}
+        <View className="py-3">
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             className="px-4"
+            decelerationRate="fast"
+            snapToInterval={380 + 16} // width + margin
+            snapToAlignment="center"
           >
-            {popularCategories.map((category, index) => (
-              <PopularCategoryCard key={index} {...category} />
+            {banners.map((banner) => (
+              <TouchableOpacity
+                key={banner.id}
+                className="mr-4"
+                onPress={() => console.log(`Banner ${banner.id} pressed`)}
+              >
+                <View className="relative">
+                  <Image
+                    source={{ uri: banner.image }}
+                    className="w-[380px] h-[180px] rounded-2xl"
+                    resizeMode="cover"
+                  />
+                  <View className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl" />
+                  <View className="absolute bottom-4 left-4">
+                    <Text className="text-white font-bold text-xl mb-1">
+                      {banner.title}
+                    </Text>
+                    <TouchableOpacity className="bg-white backdrop-blur-md px-4 py-2 rounded-full">
+                      <Text className="text-black font-medium">Shop Now</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
-        </View> */}
+        </View>
+
+        {/* Quick Actions */}
+        <View className="px-4 py-3">
+          <View className="flex-row justify-between">
+            <TouchableOpacity
+              className="bg-white flex-1 mr-2 p-4 rounded-2xl shadow-sm"
+              onPress={() => router.push("/category")}
+            >
+              <View className="bg-blue-100 w-12 h-12 rounded-full items-center justify-center mb-2">
+                <Ionicons name="grid-outline" size={24} color="#2563EB" />
+              </View>
+              <Text className="font-medium text-gray-800">Categories</Text>
+              <Text className="text-gray-500 text-sm">Browse all</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className="bg-white flex-1 ml-2 p-4 rounded-2xl shadow-sm"
+              onPress={() => router.push("/deals")}
+            >
+              <View className="bg-red-100 w-12 h-12 rounded-full items-center justify-center mb-2">
+                <Ionicons name="flash-outline" size={24} color="#DC2626" />
+              </View>
+              <Text className="font-medium text-gray-800">Hot Deals</Text>
+              <Text className="text-gray-500 text-sm">Special offers</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {/* Featured Products */}
         <View className="px-4 py-3">
-          <Text className="text-lg font-bold mb-3">Featured Products</Text>
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-xl font-bold text-gray-800">
+              Featured Products
+            </Text>
+            <TouchableOpacity className="flex-row items-center">
+              <Text className="text-blue-500 mr-1">View all</Text>
+              <Ionicons name="chevron-forward" size={16} color="#2563EB" />
+            </TouchableOpacity>
+          </View>
+
           <View className="flex-row flex-wrap justify-between">
             {dummyProducts.map((product) => (
-              <View
+              <TouchableOpacity
                 key={product.id}
-                className="bg-white rounded-xl w-[48%] mb-4 shadow-sm"
+                className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
+                onPress={() => router.push(`/product/${product.id}`)}
               >
                 <Image
                   source={{ uri: product.image }}
-                  className="w-full h-32 rounded-t-xl"
+                  className="w-full h-40 rounded-t-2xl"
                   resizeMode="cover"
                 />
                 <View className="p-3">
-                  <Text className="font-medium text-gray-800">
+                  <Text
+                    className="font-medium text-gray-800 mb-1"
+                    numberOfLines={2}
+                  >
                     {product.name}
                   </Text>
-                  <Text className="text-green-500 font-bold">
-                    {product.price}
-                  </Text>
-                  <View className="flex-row items-center mt-1">
-                    <Ionicons name="star" size={16} color="#FFD800" />
-                    <Text className="text-gray-600 text-sm ml-1">
-                      {product.rating}
+                  <View className="flex-row items-center justify-between">
+                    <Text className="text-green-500 font-bold text-lg">
+                      {product.price}
                     </Text>
+                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
+                      <Ionicons name="star" size={14} color="#FFD700" />
+                      <Text className="text-gray-700 text-sm ml-1 font-medium">
+                        {product.rating}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
       </ScrollView>
 
-      {/* Filter Button - Fixed at bottom */}
-      <View className="absolute bottom-20 right-2">
+      {/* Filter Button */}
+      <View className="absolute bottom-6 right-4">
         <TouchableOpacity
-          className="bg-black w-12 h-12 rounded-full items-center justify-center shadow-lg"
+          className="bg-black w-14 h-14 rounded-full items-center justify-center shadow-lg"
           onPress={() => console.log("Filter pressed")}
         >
-          <Ionicons name="funnel" size={20} color="#FFFFFF" />
+          <Ionicons name="funnel-outline" size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

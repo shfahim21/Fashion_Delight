@@ -65,7 +65,7 @@ const TabLayout = () => {
           height: 65,
           paddingBottom: 5,
           paddingTop: 5,
-          borderWidth: 1,
+          borderWidth: 0,
           borderColor: "#1235",
           // borderColor: "#F33"
           elevation: 5,

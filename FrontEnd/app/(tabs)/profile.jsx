@@ -8,13 +8,12 @@ import {
   SafeAreaView,
 } from "react-native";
 import { AuthContext } from "../../Context/AuthProvider";
-import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Link, router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const Profile = () => {
   const { user, userSignOut } = useContext(AuthContext);
 
-  // Sample user data
   const userInfo = {
     name: "John Doe",
     email: "john.doe@example.com",
@@ -22,104 +21,183 @@ const Profile = () => {
     orders: 12,
   };
 
-  const menuItems = [
-    { id: 1, title: "My Orders", icon: "📦" },
-    { id: 2, title: "Shipping Addresses", icon: "🏠" },
-    { id: 3, title: "Payment Methods", icon: "💳" },
-    { id: 4, title: "Wishlist", icon: "❤️" },
-    { id: 5, title: "Settings", icon: "⚙️" },
-    { id: 6, title: "Help & Support", icon: "❓" },
+  const menuSections = [
+    {
+      title: "Account",
+      items: [
+        {
+          id: 1,
+          title: "Edit Profile",
+          subtitle: "Update your personal information",
+          icon: "person-outline",
+          color: "#2563EB",
+          bgColor: "bg-blue-100",
+          route: "/edit-profile",
+        },
+        {
+          id: 2,
+          title: "Shipping Addresses",
+          subtitle: "Manage delivery locations",
+          icon: "location-outline",
+          color: "#059669",
+          bgColor: "bg-green-100",
+          route: "/shipping-address",
+        },
+        {
+          id: 3,
+          title: "Payment Methods",
+          subtitle: "Manage your payment options",
+          icon: "card-outline",
+          color: "#7C3AED",
+          bgColor: "bg-purple-100",
+          route: "/payment-methods",
+        },
+      ],
+    },
+    {
+      title: "Shopping",
+      items: [
+        {
+          id: 4,
+          title: "My Orders",
+          subtitle: "Track and manage orders",
+          icon: "cube-outline",
+          color: "#EA580C",
+          bgColor: "bg-orange-100",
+          route: "/orders",
+        },
+        {
+          id: 5,
+          title: "Wishlist",
+          subtitle: "Products you've saved",
+          icon: "heart-outline",
+          color: "#DC2626",
+          bgColor: "bg-red-100",
+          route: "/wishlist",
+        },
+      ],
+    },
+    // {
+    //   title: "Support",
+    //   items: [
+    //     {
+    //       id: 6,
+    //       title: "Help Center",
+    //       subtitle: "Get help and support",
+    //       icon: "help-circle-outline",
+    //       color: "#0891B2",
+    //       bgColor: "bg-cyan-100",
+    //       route: "/help",
+    //     },
+    //     {
+    //       id: 7,
+    //       title: "Settings",
+    //       subtitle: "App preferences",
+    //       icon: "settings-outline",
+    //       color: "#4B5563",
+    //       bgColor: "bg-gray-100",
+    //       route: "/settings",
+    //     },
+    //   ],
+    // },
   ];
 
-  const MenuItem = ({ title, icon }) => (
+  const MenuItem = ({ item }) => (
     <TouchableOpacity
-      className="flex-row items-center px-4 py-3 border-b border-gray-100"
-      onPress={() => console.log(`${title} pressed`)}
+      className="flex-row items-center p-4 mb-2 bg-white rounded-xl shadow-sm"
+      onPress={() => router.push(item.route)}
     >
-      <Text className="text-xl mr-3">{icon}</Text>
-      <Text className="flex-1 text-gray-700">{title}</Text>
+      <View className={`${item.bgColor} p-2 rounded-full`}>
+        <Ionicons name={item.icon} size={20} color={item.color} />
+      </View>
+      <View className="flex-1 ml-3">
+        <Text className="font-medium text-gray-800">{item.title}</Text>
+        <Text className="text-gray-500 text-sm">{item.subtitle}</Text>
+      </View>
+      <Ionicons name="chevron-forward" size={20} color="#374151" />
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView className="flex-1 min-h-[84vh] mt-10">
-      {/* <StatusBar backgroundColor="#FFFFFF" /> */}
-      <ScrollView>
-        {/* Top Container: Action Bar, Header, and Stats */}
-        <View className="bg-white mb-4 py-1 mx-4 rounded-xl">
-          {/* Action Bar */}
-          <View className="py-2 px-4 flex-row justify-between items-center border-b border-gray-200">
-            <Text className="text-xl font-bold text-gray-800">Profile</Text>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView className="flex-1 pt-10">
+        {/* Header Section */}
+        <View className="px-4 mb-6">
+          <View className="flex-row justify-between items-center mb-6">
+            <Text className="text-2xl font-bold text-gray-800">Profile</Text>
             <TouchableOpacity
-              className={`bg-red-600 py-2 px-4 rounded-full ${
-                user ? "" : "hidden"
-              }`}
-              onPress={userSignOut}
+              className={`${
+                user ? "bg-red-500" : "bg-black"
+              } py-2 px-4 rounded-full`}
+              onPress={user ? userSignOut : null}
             >
-              <Text className="text-white font-semibold">Logout</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className={`bg-black py-2 px-4 rounded-full ${
-                user ? "hidden" : ""
-              }`}
-            >
-              <Link href="/(auth)/sign-in" className="text-white font-semibold">
-                Login
-              </Link>
+              {user ? (
+                <Text className="text-white font-semibold">Logout</Text>
+              ) : (
+                <Link
+                  href="/(auth)/sign-in"
+                  className="text-white font-semibold"
+                >
+                  Login
+                </Link>
+              )}
             </TouchableOpacity>
           </View>
 
-          {/* Header Section */}
-          <View className="p-6 items-center">
-            <View className="relative mb-4">
-              <View className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden">
+          {/* Profile Card */}
+          <View className="bg-white p-4 rounded-2xl shadow-sm">
+            <View className="flex-row items-center">
+              <View className="relative">
                 <Image
                   source={{ uri: "https://via.placeholder.com/96" }}
-                  className="w-24 h-24"
+                  className="w-20 h-20 rounded-full"
                 />
+                <TouchableOpacity
+                  className="absolute bottom-0 right-0 bg-blue-500 p-1 rounded-full"
+                  onPress={() => console.log("Edit photo")}
+                >
+                  <Ionicons name="camera" size={16} color="white" />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                className="absolute bottom-0 right-0 bg-blue-500 px-3 py-1 rounded-full"
-                onPress={() => console.log("Edit pressed")}
-              >
-                <Text className="text-white text-sm">Edit</Text>
-              </TouchableOpacity>
-            </View>
-            <Text className="text-2xl font-bold text-gray-800 mb-1">
-              {user?.email || "UserName"}
-            </Text>
-            <Text className="text-gray-500">{userInfo.email}</Text>
-          </View>
-
-          {/* Stats Section */}
-          <View className="py-4 border-t border-gray-100">
-            <View className="flex-row justify-center items-center">
-              <View className="items-center px-8">
-                <Text className="text-xl font-semibold text-gray-800">
-                  {userInfo.orders}
+              <View className="ml-4 flex-1">
+                <Text className="text-xl font-bold text-gray-800">
+                  {user?.email || "Guest User"}
                 </Text>
-                <Text className="text-sm text-gray-500">Orders</Text>
-              </View>
-              <View className="h-12 w-px bg-gray-200 mx-4" />
-              <View className="items-center px-8">
-                <Text className="text-xl font-semibold text-gray-800">
-                  {userInfo.memberSince}
-                </Text>
-                <Text className="text-sm text-gray-500">Member Since</Text>
+                <Text className="text-gray-500">{userInfo.email}</Text>
+                <View className="flex-row mt-2">
+                  <View className="flex-row items-center mr-4">
+                    <Ionicons name="cube-outline" size={16} color="#4B5563" />
+                    <Text className="ml-1 text-gray-600">
+                      {userInfo.orders} Orders
+                    </Text>
+                  </View>
+                  <View className="flex-row items-center">
+                    <Ionicons
+                      name="calendar-outline"
+                      size={16}
+                      color="#4B5563"
+                    />
+                    <Text className="ml-1 text-gray-600">
+                      Since {userInfo.memberSince}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
         </View>
 
-        {/* Bottom Container: Menu Section */}
-        <View className="bg-white rounded-xl shadow-sm mx-4">
-          <View className="py-2">
-            <Text className="px-4 py-2 text-gray-500 text-sm">MENU</Text>
-            {menuItems.map((item) => (
-              <MenuItem key={item.id} title={item.title} icon={item.icon} />
+        {/* Menu Sections */}
+        {menuSections.map((section, index) => (
+          <View key={index} className="px-4 mb-6">
+            <Text className="text-gray-600 font-medium mb-3">
+              {section.title}
+            </Text>
+            {section.items.map((item) => (
+              <MenuItem key={item.id} item={item} />
             ))}
           </View>
-        </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
