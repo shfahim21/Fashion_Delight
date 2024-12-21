@@ -171,15 +171,15 @@ const Category = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50 min-h-[84vh] mt-10">
+    <SafeAreaView className="flex-1 min-h-[84vh] mt-10">
       {/* Header */}
-      <View className="px-4 py-1 bg-white">
+      <View className="px-4 py-1">
         <Text className="text-2xl font-bold text-gray-800">Categories</Text>
       </View>
 
       {/* Search Bar */}
-      <View className="px-4 py-3 bg-white">
-        <View className="flex-row items-center bg-gray-100 px-4 py-2 rounded-xl">
+      <View className="px-4 py-3">
+        <View className="flex-row items-center bg-white px-4 py-2 rounded-xl">
           <Ionicons name="search" size={20} color="#6B7280" />
           <TextInput
             placeholder="Search categories"

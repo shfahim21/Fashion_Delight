@@ -11,6 +11,7 @@ import {
 //no chng
 import { AuthContext } from "../../Context/AuthProvider";
 import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 const home = () => {
   //no chng
