@@ -16,9 +16,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
 import { Link } from "expo-router";
+import axios from "axios";
 
 const SignInScreen = ({ navigation }) => {
-  const { setUser, userSignIn } = useContext(AuthContext);
+  const { setUser, userSignIn, setDbUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +34,12 @@ const SignInScreen = ({ navigation }) => {
     try {
       setLoading(true);
       await userSignIn(email, password);
+      axios
+        .get(`https://fd-backend-peach.vercel.app/users/${email}`)
+        .then((response) => {
+          setDbUser(response.data);
+          console.log(response.data);
+        });
       router.push("/home");
     } catch (error) {
       Alert.alert("Error", error.message);

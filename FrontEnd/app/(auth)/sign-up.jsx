@@ -16,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
 import { Link } from "expo-router";
+import axios from "axios";
 
 const SignUpScreen = ({ navigation }) => {
   const { userSignUp, setUser } = useContext(AuthContext);
@@ -28,6 +29,26 @@ const SignUpScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const userToStore = {
+    name: formData.fullName,
+    email: formData.email,
+    phone: null,
+    profilePicture: "https://picsum.photos/200",
+    dateOfBirth: null,
+    address: [
+      {
+        street: null,
+        city: null,
+        zip: null,
+      },
+    ],
+    wishlist: [],
+    cart: [],
+    role: "customer",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 
   const handleSignUp = async () => {
     // Basic validation
@@ -55,6 +76,12 @@ const SignUpScreen = ({ navigation }) => {
       setLoading(true);
       // Sign up logic
       await userSignUp(formData.email, formData.password);
+      // create a database entry for the user
+      axios
+        .post("https://fd-backend-peach.vercel.app/users", userToStore)
+        .then((response) => {
+          console.log("User created successfully:", response.data);
+        });
       router.push("/home");
     } catch (error) {
       Alert.alert("Error", error.message);

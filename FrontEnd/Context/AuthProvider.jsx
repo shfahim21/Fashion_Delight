@@ -14,6 +14,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext();
 // export const auth = getAuth(app);
@@ -24,6 +25,7 @@ const auth = initializeAuth(app, {
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dbUser, setDbUser] = useState(null);
   const provider = new GoogleAuthProvider();
 
   const userSignUp = (email, password) => {
@@ -58,18 +60,32 @@ function AuthProvider({ children }) {
     loading,
     googleLogin,
     forgetPassword,
+    dbUser,
+    setDbUser,
     // userProfileUpdate,
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      console.log(currentUser.email);
+      if (currentUser) {
+        axios
+          .get(`https://fd-backend-peach.vercel.app/users/${currentUser.email}`)
+          .then((response) => {
+            setDbUser(response.data);
+            console.log(response.data);
+          });
+      }
       setLoading(false);
     });
+
+    // Cleanup the subscription properly
     return () => {
-      unsubscribe;
+      unsubscribe();
     };
   }, []);
+
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
