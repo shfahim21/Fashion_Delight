@@ -17,6 +17,7 @@ const RootLayout = () => {
         <Stack.Screen name="UpdateProfile" options={{ headerShown: false }} />
         <Stack.Screen name="UpdateAddress" options={{ headerShown: false }} />
         <Stack.Screen name="AllProduct" options={{ headerShown: false }} />
+        <Stack.Screen name="Wishlist" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );

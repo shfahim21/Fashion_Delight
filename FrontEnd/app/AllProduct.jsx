@@ -41,7 +41,7 @@ const AllProduct = () => {
             <TouchableOpacity
               key={product._id}
               className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
-              onPress={() => router.push(`/product/${product.id}`)}
+              onPress={() => router.push(`search/${product._id}`)}
             >
               <Image
                 // source={{ uri: product.variants[0].images[0].url }}

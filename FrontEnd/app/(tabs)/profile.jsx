@@ -12,6 +12,7 @@ import { Link, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import UpdateProfile from "./../UpdateProfile";
 import UpdateAddress from "./../UpdateAddress";
+import Wishlist from "./../Wishlist";
 
 const Profile = () => {
   const { user, userSignOut } = useContext(AuthContext);
@@ -52,7 +53,8 @@ const Profile = () => {
           icon: "card-outline",
           color: "#7C3AED",
           bgColor: "bg-purple-100",
-          route: "/payment-methods",
+          // route: "/payment-methods",
+          route: "/Clothing",
         },
       ],
     },
@@ -75,7 +77,7 @@ const Profile = () => {
           icon: "heart-outline",
           color: "#DC2626",
           bgColor: "bg-red-100",
-          route: "/wishlist",
+          route: "/Wishlist",
         },
       ],
     },
