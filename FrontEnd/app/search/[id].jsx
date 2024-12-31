@@ -1,8 +1,16 @@
 import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { AuthContext } from "../../Context/AuthProvider";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductDetails = () => {
   const { dbUser } = useContext(AuthContext);
@@ -27,6 +35,40 @@ const ProductDetails = () => {
     fetchProduct();
   }, [id]);
 
+  const addToWishlist = async (productId) => {
+    try {
+      const response = await axios.put(
+        `https://fd-backend-peach.vercel.app/users/${dbUser.email}/wishlist`,
+        { productId } // Only send the productId to the backend
+      );
+
+      if (response.data.success) {
+        console.log("Wishlist updated successfully:", response.data.message);
+      } else {
+        console.error("Failed to update wishlist:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+    }
+  };
+
+  const addToCart = async (productId) => {
+    try {
+      const response = await axios.put(
+        `https://fd-backend-peach.vercel.app/users/${dbUser.email}/cart`,
+        { productId } // Only send the productId to the backend
+      );
+
+      if (response.data.success) {
+        console.log("Cart updated successfully:", response.data.message);
+      } else {
+        console.error("Failed to update cart:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-black">
@@ -47,6 +89,7 @@ const ProductDetails = () => {
   const primaryImage = "https://via.placeholder.com/150"; // Fallback image
 
   return (
+    // <SafeAreaView>
     <ScrollView className="bg-black flex-1">
       <Image
         source={{ uri: primaryImage }}
@@ -115,7 +158,27 @@ const ProductDetails = () => {
           </Text>
         </View>
       </View>
+      {/* add to cart */}
+      <View className="p-5 flex-row items-center gap-5">
+        <TouchableOpacity
+          onPress={() => {
+            addToCart(product._id);
+          }}
+          className="bg-white py-3 items-center justify-center px-4 rounded-full"
+        >
+          <Text className="text-black font-semibold">Add to Cart</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            addToWishlist(product._id);
+          }}
+          className="bg-white py-3 items-center justify-center px-4 rounded-full"
+        >
+          <Text className="text-black font-semibold">Add to Wishlist</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
+    // </SafeAreaView>
   );
 };
 

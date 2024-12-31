@@ -53,6 +53,68 @@ async function run() {
       res.send(result);
     });
 
+    // Update Wishlist
+    app.put("/users/:email/wishlist", async (req, res) => {
+      const email = req.params.email;
+      const { productId } = req.body; // Expect productId in the request body
+
+      try {
+        const filter = { email };
+        const updateDoc = {
+          $addToSet: { wishlist: productId }, // Use $addToSet to prevent duplicates
+        };
+        const result = await users.updateOne(filter, updateDoc);
+
+        if (result.modifiedCount > 0) {
+          res
+            .status(200)
+            .send({ success: true, message: "Wishlist updated successfully." });
+        } else {
+          res.status(404).send({
+            success: false,
+            message: "User not found or no changes made.",
+          });
+        }
+      } catch (error) {
+        console.error("Error updating wishlist:", error);
+        res.status(500).send({
+          success: false,
+          message: "An error occurred while updating the wishlist.",
+        });
+      }
+    });
+
+    // Add to Cart
+    app.put("/users/:email/cart", async (req, res) => {
+      const email = req.params.email;
+      const { productId } = req.body; // Expect productId in the request body
+
+      try {
+        const filter = { email };
+        const updateDoc = {
+          $addToSet: { cart: productId }, // Use $addToSet to prevent duplicates
+        };
+        const result = await users.updateOne(filter, updateDoc);
+
+        if (result.modifiedCount > 0) {
+          res
+            .status(200)
+            .send({ success: true, message: "Cart updated successfully." });
+        } else {
+          res.status(404).send({
+            success: false,
+            message: "User not found or no changes made.",
+          });
+        }
+      } catch (error) {
+        console.error("Error updating cart:", error);
+        res.status(500).send({
+          success: false,
+          message: "An error occurred while updating the cart.",
+        });
+      }
+    });
+
     // create a new product
     app.post("/products", async (req, res) => {
       const product = req.body;

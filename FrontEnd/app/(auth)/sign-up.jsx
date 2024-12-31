@@ -15,7 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import axios from "axios";
 
 const SignUpScreen = ({ navigation }) => {
