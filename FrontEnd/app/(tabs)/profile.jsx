@@ -10,6 +10,8 @@ import {
 import { AuthContext } from "../../Context/AuthProvider";
 import { Link, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import UpdateProfile from "./../UpdateProfile";
+import UpdateAddress from "./../UpdateAddress";
 
 const Profile = () => {
   const { user, userSignOut } = useContext(AuthContext);
@@ -32,7 +34,7 @@ const Profile = () => {
           icon: "person-outline",
           color: "#2563EB",
           bgColor: "bg-blue-100",
-          route: "/edit-profile",
+          route: "/UpdateProfile",
         },
         {
           id: 2,
@@ -41,7 +43,7 @@ const Profile = () => {
           icon: "location-outline",
           color: "#059669",
           bgColor: "bg-green-100",
-          route: "/shipping-address",
+          route: "/UpdateAddress",
         },
         {
           id: 3,

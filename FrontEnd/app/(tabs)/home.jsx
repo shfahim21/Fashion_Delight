@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,153 +14,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Button } from "react-native-web";
 import { router } from "expo-router";
+import axios from "axios";
+import AllProduct from "./../AllProduct";
 
 const home = () => {
   //no chng
   const { user } = useContext(AuthContext);
 
-  const dummyProducts = [
-    {
-      id: 1,
-      name: "iPhone 14 Pro",
-      price: "$999",
-      image: "https://picsum.photos/200/300",
-      rating: 4.8,
-    },
-    {
-      id: 2,
-      name: "Samsung Galaxy S23 Ultra",
-      price: "$1,199",
-      image: "https://picsum.photos/200/301",
-      rating: 4.7,
-    },
-    {
-      id: 3,
-      name: "MacBook Pro 14-inch",
-      price: "$1,999",
-      image: "https://picsum.photos/200/302",
-      rating: 4.9,
-    },
-    {
-      id: 4,
-      name: "Dell XPS 15 Laptop",
-      price: "$1,799",
-      image: "https://picsum.photos/200/303",
-      rating: 4.6,
-    },
-    {
-      id: 5,
-      name: "iPad Pro 12.9-inch",
-      price: "$1,099",
-      image: "https://picsum.photos/200/304",
-      rating: 4.7,
-    },
-    {
-      id: 6,
-      name: "Google Pixel 7 Pro",
-      price: "$899",
-      image: "https://picsum.photos/200/305",
-      rating: 4.5,
-    },
-    {
-      id: 7,
-      name: "Sony WH-1000XM5 Headphones",
-      price: "$399",
-      image: "https://picsum.photos/200/306",
-      rating: 4.8,
-    },
-    {
-      id: 8,
-      name: "Apple Watch Series 8",
-      price: "$399",
-      image: "https://picsum.photos/200/307",
-      rating: 4.6,
-    },
-    {
-      id: 9,
-      name: "Surface Laptop 5",
-      price: "$1,299",
-      image: "https://picsum.photos/200/308",
-      rating: 4.4,
-    },
-    {
-      id: 10,
-      name: "Lenovo ThinkPad X1 Carbon",
-      price: "$1,649",
-      image: "https://picsum.photos/200/309",
-      rating: 4.7,
-    },
-    {
-      id: 11,
-      name: "AirPods Pro (2nd Generation)",
-      price: "$249",
-      image: "https://picsum.photos/200/310",
-      rating: 4.7,
-    },
-    {
-      id: 12,
-      name: "Samsung Galaxy Tab S8 Ultra",
-      price: "$1,099",
-      image: "https://picsum.photos/200/311",
-      rating: 4.5,
-    },
-    {
-      id: 13,
-      name: "Bose QuietComfort 45",
-      price: "$329",
-      image: "https://picsum.photos/200/312",
-      rating: 4.6,
-    },
-    {
-      id: 14,
-      name: "Garmin Fenix 7 Smartwatch",
-      price: "$699",
-      image: "https://picsum.photos/200/313",
-      rating: 4.8,
-    },
-    {
-      id: 15,
-      name: "Razer Blade 15 Gaming Laptop",
-      price: "$2,399",
-      image: "https://picsum.photos/200/314",
-      rating: 4.5,
-    },
-    {
-      id: 16,
-      name: "OnePlus 10 Pro",
-      price: "$799",
-      image: "https://picsum.photos/200/315",
-      rating: 4.3,
-    },
-    {
-      id: 17,
-      name: "GoPro HERO11 Black",
-      price: "$399",
-      image: "https://picsum.photos/200/316",
-      rating: 4.7,
-    },
-    {
-      id: 18,
-      name: "Beats Studio3 Wireless",
-      price: "$349",
-      image: "https://picsum.photos/200/317",
-      rating: 4.4,
-    },
-    {
-      id: 19,
-      name: "Apple Mac Mini M2",
-      price: "$599",
-      image: "https://picsum.photos/200/318",
-      rating: 4.6,
-    },
-    {
-      id: 20,
-      name: "Fitbit Sense 2",
-      price: "$299",
-      image: "https://picsum.photos/200/319",
-      rating: 4.5,
-    },
-  ];
   const banners = [
     {
       id: 1,
@@ -178,6 +38,103 @@ const home = () => {
       title: "Limited Time Deal",
     },
   ];
+
+  demo_object = {
+    id: "TS-12345",
+    sku: "BLK-TSHIRT-M-001",
+    name: "Classic Cotton Crew Neck T-Shirt",
+    brand: "ComfortWear",
+    description:
+      "Premium quality cotton t-shirt featuring a comfortable crew neck and short sleeves. Perfect for everyday wear.",
+    price: {
+      amount: 29.99,
+      currency: "USD",
+    },
+    discount: {
+      percentage: 0,
+      amount: 0,
+      validUntil: null,
+    },
+    category: {
+      primary: "Clothing",
+      sub: "T-Shirts",
+    },
+    attributes: {
+      material: "100% Cotton",
+      weight: "180g/m²",
+      care: ["Machine wash cold", "Tumble dry low", "Do not bleach"],
+    },
+    variants: [
+      {
+        id: "TS-12345-BLK-S",
+        color: "Black",
+        size: "S",
+        stockQuantity: 45,
+        images: [
+          {
+            url: "/images/products/ts-12345-blk-front.jpg",
+            alt: "Black T-Shirt Front View",
+            isPrimary: true,
+          },
+          {
+            url: "/images/products/ts-12345-blk-back.jpg",
+            alt: "Black T-Shirt Back View",
+            isPrimary: false,
+          },
+        ],
+      },
+    ],
+    metadata: {
+      createdAt: "2024-12-31T10:00:00Z",
+      updatedAt: "2024-12-31T10:00:00Z",
+      isPublished: true,
+      tags: ["essentials", "basics", "summer"],
+      ratings: {
+        average: 4.5,
+        count: 128,
+      },
+    },
+    shipping: {
+      weight: 200,
+      dimensions: {
+        length: 25,
+        width: 20,
+        height: 2,
+        unit: "cm",
+      },
+      freeShipping: true,
+      estimatedDelivery: "2-4 business days",
+    },
+    seo: {
+      metaTitle: "Classic Cotton Crew Neck T-Shirt | ComfortWear",
+      metaDescription:
+        "Shop our premium cotton t-shirt with comfortable crew neck. Available in multiple sizes and colors. Perfect for everyday wear.",
+      keywords: [
+        "cotton t-shirt",
+        "crew neck",
+        "casual wear",
+        "comfortable clothing",
+      ],
+    },
+  };
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const response = await axios.get(
+          "https://fd-backend-peach.vercel.app/products"
+        );
+        setFeaturedProducts(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50 mt-10 mb-16">
       <ScrollView className="flex-1">
@@ -264,21 +221,25 @@ const home = () => {
             <Text className="text-xl font-bold text-gray-800">
               Featured Products
             </Text>
-            <TouchableOpacity className="flex-row items-center">
+            <TouchableOpacity
+              className="flex-row items-center"
+              onPress={() => router.push("/AllProduct")}
+            >
               <Text className="text-blue-500 mr-1">View all</Text>
               <Ionicons name="chevron-forward" size={16} color="#2563EB" />
             </TouchableOpacity>
           </View>
 
           <View className="flex-row flex-wrap justify-between">
-            {dummyProducts.map((product) => (
+            {featuredProducts.map((product) => (
               <TouchableOpacity
-                key={product.id}
+                key={product._id}
                 className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
                 onPress={() => router.push(`/product/${product.id}`)}
               >
                 <Image
-                  source={{ uri: product.image }}
+                  // source={{ uri: product.variants[0].images[0].url }}
+                  source={{ uri: "https://via.placeholder.com/150" }}
                   className="w-full h-40 rounded-t-2xl"
                   resizeMode="cover"
                 />
@@ -291,12 +252,12 @@ const home = () => {
                   </Text>
                   <View className="flex-row items-center justify-between">
                     <Text className="text-green-500 font-bold text-lg">
-                      {product.price}
+                      {product.price.amount}
                     </Text>
                     <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
                       <Ionicons name="star" size={14} color="#FFD700" />
                       <Text className="text-gray-700 text-sm ml-1 font-medium">
-                        {product.rating}
+                        {product.metadata.ratings.average}
                       </Text>
                     </View>
                   </View>

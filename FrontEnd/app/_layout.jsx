@@ -3,6 +3,7 @@ import React from "react";
 import { Stack } from "expo-router";
 import Profile from "./(tabs)/profile";
 import AuthProvider from "../Context/AuthProvider";
+import AllProduct from "./AllProduct";
 
 const RootLayout = () => {
   return (
@@ -14,6 +15,8 @@ const RootLayout = () => {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="productPage" options={{ headerShown: false }} />
         <Stack.Screen name="UpdateProfile" options={{ headerShown: false }} />
+        <Stack.Screen name="UpdateAddress" options={{ headerShown: false }} />
+        <Stack.Screen name="AllProduct" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );

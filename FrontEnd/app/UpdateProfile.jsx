@@ -66,99 +66,70 @@ const UpdateProfile = () => {
   };
 
   return (
-    <ScrollView className={`p-6 bg-gray-100 flex-grow`}>
-      <Text className={`text-2xl font-bold text-center`}>Update Profile</Text>
+    <ScrollView className={`p-6 bg-gray-100 flex-grow mt-5`}>
+      <View className={`flex-1 justify-center`}>
+        <Text className={`text-2xl font-bold text-center`}>Update Profile</Text>
 
-      <View
-      // className={`border-4 border-black rounded-full w-28 h-28 self-center mt-5 mb-4`}
-      >
-        <Image
-          source={{ uri: formData.profilePicture }}
-          className={`w-24 h-24 rounded-full self-center mb-6`}
-        />
-      </View>
-
-      <Text className={`text-lg font-semibold mb-2`}>Profile Picture URL:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.profilePicture}
-        onChangeText={(value) => handleInputChange("profilePicture", value)}
-      />
-
-      <Text className={`text-lg font-semibold mb-2`}>Name:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.name}
-        onChangeText={(value) => handleInputChange("name", value)}
-      />
-
-      <Text className={`text-lg font-semibold mb-2`}>Email:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.email}
-        keyboardType="email-address"
-        onChangeText={(value) => handleInputChange("email", value)}
-      />
-
-      <Text className={`text-lg font-semibold mb-2`}>Phone:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.phone}
-        keyboardType="phone-pad"
-        onChangeText={(value) => handleInputChange("phone", value)}
-      />
-
-      <Text className={`text-lg font-semibold mb-2`}>Date of Birth:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.dateOfBirth}
-        onChangeText={(value) => handleInputChange("dateOfBirth", value)}
-      />
-
-      <Text className={`text-lg font-semibold mb-2`}>Address:</Text>
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.address.street}
-        placeholder="Street"
-        onChangeText={(value) => handleAddressChange("street", value)}
-      />
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.address.city}
-        placeholder="City"
-        onChangeText={(value) => handleAddressChange("city", value)}
-      />
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.address.state}
-        placeholder="State"
-        onChangeText={(value) => handleAddressChange("state", value)}
-      />
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.address.zipCode}
-        placeholder="Zip Code"
-        keyboardType="numeric"
-        onChangeText={(value) => handleAddressChange("zipCode", value)}
-      />
-      <TextInput
-        className={`border border-gray-300 p-3 rounded-lg mb-4`}
-        value={formData.address.country}
-        placeholder="Country"
-        onChangeText={(value) => handleAddressChange("country", value)}
-      />
-
-      <View className={`mt-4 mb-10 rounded-full`}>
-        <TouchableOpacity
-          onPress={handleSubmit}
-          className={`bg-black py-2 px-4 rounded-full`}
+        <View
+        // className={`border-4 border-black rounded-full w-28 h-28 self-center mt-5 mb-4`}
         >
-          <Text
-            className={`text-lg font-semibold text-white py-2 px-4 text-center`}
+          <Image
+            source={{ uri: formData.profilePicture }}
+            className={`w-24 h-24 rounded-full self-center mb-6`}
+          />
+        </View>
+
+        <Text className={`text-lg font-semibold mb-2`}>
+          Profile Picture URL:
+        </Text>
+        <TextInput
+          className={`border border-gray-300 p-3 rounded-lg mb-4`}
+          value={formData.profilePicture}
+          onChangeText={(value) => handleInputChange("profilePicture", value)}
+        />
+
+        <Text className={`text-lg font-semibold mb-2`}>Name:</Text>
+        <TextInput
+          className={`border border-gray-300 p-3 rounded-lg mb-4`}
+          value={formData.name}
+          onChangeText={(value) => handleInputChange("name", value)}
+        />
+
+        <Text className={`text-lg font-semibold mb-2`}>Email:</Text>
+        <TextInput
+          className={`border border-gray-300 p-3 rounded-lg mb-4`}
+          value={formData.email}
+          keyboardType="email-address"
+          onChangeText={(value) => handleInputChange("email", value)}
+        />
+
+        <Text className={`text-lg font-semibold mb-2`}>Phone:</Text>
+        <TextInput
+          className={`border border-gray-300 p-3 rounded-lg mb-4`}
+          value={formData.phone}
+          keyboardType="phone-pad"
+          onChangeText={(value) => handleInputChange("phone", value)}
+        />
+
+        <Text className={`text-lg font-semibold mb-2`}>Date of Birth:</Text>
+        <TextInput
+          className={`border border-gray-300 p-3 rounded-lg mb-4`}
+          value={formData.dateOfBirth}
+          onChangeText={(value) => handleInputChange("dateOfBirth", value)}
+        />
+
+        <View className={`mt-4 mb-10 rounded-full`}>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            className={`bg-black py-2 px-4 rounded-full`}
           >
-            Update Profile
-          </Text>
-        </TouchableOpacity>
+            <Text
+              className={`text-lg font-semibold text-white py-2 px-4 text-center`}
+            >
+              Update Profile
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
