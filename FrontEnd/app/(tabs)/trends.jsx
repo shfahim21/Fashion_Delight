@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 
 const TrendingProducts = () => {
   const [viewMode, setViewMode] = useState("card");
@@ -176,10 +177,28 @@ const TrendingProducts = () => {
     },
   ];
 
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const response = await axios.get(
+          "https://fd-backend-peach.vercel.app/products"
+        );
+        setFeaturedProducts(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      }
+    };
+
+    fetchFeaturedProducts();
+    console.log(featuredProducts);
+  }, []);
   const renderCard = (product) => {
     return (
       // Adjusted height and padding to prevent overlap
-      <View className="relative border-red-400 border-[0px] bg-white rounded-3xl overflow-hidden shadow-2xl shadow-red-400 h-[650px] mx-1 ring-4 ring-red-400/30">
+      <View className="relative border-gray-200 border-[0.5px]  bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-500 h-[650px] mx-1 ring-4 ring-red-400/30">
         <View className="relative">
           <Image
             source={{ uri: product.image }}
@@ -202,9 +221,9 @@ const TrendingProducts = () => {
                 {product.price}
               </Text>
             </View>
-            <View className="bg-gray-100 px-3 py-1 rounded-full">
+            <View className="bg-gray-100 px-3 border-[1px] border-gray-300 py-1 rounded-full">
               <Text className="text-gray-500 font-semibold">
-                <Ionicons name="star" size={16} color="#FFD700" />{" "}
+                <Ionicons name="star" size={16} color="#ffbf00" />{" "}
                 {product.rating}
               </Text>
             </View>
@@ -214,14 +233,16 @@ const TrendingProducts = () => {
             {product.description}
           </Text>
 
-          <View className="flex-row justify-between mt-4">
-            <TouchableOpacity className="bg-gray-100 px-4 py-2 rounded-full flex-row items-center">
-              <Ionicons name="heart-outline" size={18} color="black" />
-              <Text className="text-black ml-2 text-sm">Save</Text>
+          <View className="flex-row justify-between mt-4 ">
+            <TouchableOpacity className="bg-red-100 px-4 py-2 border-[1px] border-rose-500 rounded-full flex-row items-center">
+              <Ionicons name="heart-outline" size={18} color="#F45" />
+              <Text className="text-red-500 ml-2 font-bold text-sm">Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-green-500 px-4 py-2 rounded-full flex-row items-center">
-              <Ionicons name="cart-outline" size={18} color="white" />
-              <Text className="text-white ml-2 text-sm">Add to Cart</Text>
+            <TouchableOpacity className="bg-green-100 px-4 py-2 border-[1px] border-green-400 rounded-full flex-row items-center">
+              <Ionicons name="cart-outline" size={18} color="green" />
+              <Text className="text-green-500 font-bold ml-2 text-sm">
+                Add to Cart
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -240,7 +261,7 @@ const TrendingProducts = () => {
         <View className="flex-row justify-between items-center mt-2">
           <Text className="text-xl font-bold text-green-600">{item.price}</Text>
           <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
-            <Ionicons name="star" size={16} color="#FFD700" />
+            <Ionicons name="star" size={16} color="#FFD500" />
             <Text className="text-gray-700 ml-1 font-medium">
               {item.rating}
             </Text>
@@ -252,12 +273,12 @@ const TrendingProducts = () => {
 
   return (
     // Added safe area padding at the bottom
-    <View className="flex-1 bg-gray-50 pb-20">
+    <View className="flex-1 bg-white pb-20">
       {/* Header */}
       <View className="px-4 pt-12 pb-4 bg-white shadow-sm">
         <View className="flex-row justify-between items-center">
           <Text className="text-2xl font-bold text-gray-800">Trending Now</Text>
-          <View className="flex-row bg-gray-100 rounded-full p-1">
+          <View className="flex-row  rounded-full p-1">
             <TouchableOpacity
               onPress={() => setViewMode("card")}
               className={`px-4 py-2 rounded-full ${
@@ -304,7 +325,7 @@ const TrendingProducts = () => {
             stackScale={10}
             stackSeparation={14}
             animateCardOpacity
-            containerStyle={{ backgroundColor: "#F9FAFB" }}
+            containerStyle={{ backgroundColor: "#FFFF" }}
             cardVerticalMargin={10}
             verticalSwipe={false}
           />

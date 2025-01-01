@@ -35,12 +35,12 @@ const TabIcon = ({ iconName, color, name, focused }) => {
         size={24}
         color={color}
       />
-      <Text
+      {/* <Text
         className={`${focused ? "font-bold" : "font-normal"} text-[10px] mt-1`}
         style={{ color }}
       >
         {name}
-      </Text>
+      </Text> */}
     </View>
   );
 };
@@ -66,7 +66,7 @@ const TabLayout = () => {
           paddingBottom: 5,
           paddingTop: 5,
           borderWidth: 0,
-          borderColor: "#1235",
+          borderColor: "#FFFF",
           // borderColor: "#F33"
           elevation: 5,
           shadowColor: "#0000",

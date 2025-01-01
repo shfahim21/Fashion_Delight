@@ -136,7 +136,7 @@ const home = () => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50 mt-10 mb-16">
+    <SafeAreaView className="flex-1  mt-10 mb-16">
       <ScrollView className="flex-1">
         {/* Header Section */}
         <View className="px-4 pt-2 pb-4">
