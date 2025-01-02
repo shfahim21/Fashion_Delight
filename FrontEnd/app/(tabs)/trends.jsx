@@ -251,7 +251,7 @@ const TrendingProducts = () => {
   };
 
   const renderListItem = ({ item }) => (
-    <TouchableOpacity className="bg-white rounded-2xl p-4 flex-row shadow-sm">
+    <TouchableOpacity className="border-gray-300 shadow-sm shadow-slate-500 border-[1px] rounded-2xl p-2 mb-2 ml-2 mr-2 flex-row shadow-sm">
       <Image source={{ uri: item.image }} className="w-24 h-24 rounded-xl" />
       <View className="flex-1 ml-4 justify-between">
         <View>
@@ -260,11 +260,12 @@ const TrendingProducts = () => {
         </View>
         <View className="flex-row justify-between items-center mt-2">
           <Text className="text-xl font-bold text-green-600">{item.price}</Text>
-          <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
+          <View className="flex-row border-[1px] border-gray-200 items-center px-2 py-1 rounded-full">
             <Ionicons name="star" size={16} color="#FFD500" />
             <Text className="text-gray-700 ml-1 font-medium">
               {item.rating}
             </Text>
+
           </View>
         </View>
       </View>
@@ -278,7 +279,7 @@ const TrendingProducts = () => {
       <View className="px-4 pt-12 pb-4 bg-white shadow-sm">
         <View className="flex-row justify-between items-center">
           <Text className="text-2xl font-bold text-gray-800">Trending Now</Text>
-          <View className="flex-row  rounded-full p-1">
+          <View className="flex-row bg-gray-100 rounded-full p-1">
             <TouchableOpacity
               onPress={() => setViewMode("card")}
               className={`px-4 py-2 rounded-full ${
@@ -335,8 +336,12 @@ const TrendingProducts = () => {
           data={trendingProducts}
           renderItem={renderListItem}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerClassName="p-4 pb-4"
+          contentContainerClassName="p-4 pb-2 "
           showsVerticalScrollIndicator={false}
+          backgroundColor='#FFFFFF'
+          gap={16}
+
+          
         />
       )}
     </View>

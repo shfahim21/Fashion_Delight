@@ -204,7 +204,7 @@ const home = () => {
 
             <TouchableOpacity
               className="bg-white flex-1 ml-2 p-4 rounded-2xl shadow-sm"
-              onPress={() => router.push("/deals")}
+              onPress={() => router.push("/productPage")}
             >
               <View className="bg-red-100 w-12 h-12 rounded-full items-center justify-center mb-2">
                 <Ionicons name="flash-outline" size={24} color="#DC2626" />
@@ -236,6 +236,7 @@ const home = () => {
                 key={product._id}
                 className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
                 onPress={() => router.push(`search/${product._id}`)}
+                // onPress={() => router.push("/productPage")}
               >
                 <Image
                   // source={{ uri: product.variants[0].images[0].url }}

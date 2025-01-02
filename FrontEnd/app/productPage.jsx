@@ -27,9 +27,10 @@ const ProductDetailPage = () => {
     description:
       "A timeless leather jacket crafted from premium quality leather. Perfect for adding an edge to any outfit.",
     sizes: ["XS", "S", "M", "L", "XL"],
+   
     colors: ["Black", "Brown", "Tan"],
     images: [
-      "https://images.pexels.com/photos/1124468/pexels-photo-1124468.jpeg",
+      // "https://images.pexels.com/photos/1124468/pexels-photo-1124468.jpeg",
       "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg",
       "https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg",
     ],
@@ -101,10 +102,10 @@ const ProductDetailPage = () => {
   const screenWidth = Dimensions.get("window").width;
 
   // Calculate the height for a 2:3 ratio
-  const imageHeight = (screenWidth * 4) / 3;
+  const imageHeight = (screenWidth * 5) / 4;
 
   return (
-    <ScrollView className="flex-1 bg-white  mt-10">
+    <ScrollView className="flex-1 bg-white  mt-9">
       <View className="relative">
         {/* Image Carousel */}
         <ScrollView
@@ -120,7 +121,7 @@ const ProductDetailPage = () => {
             <Image
               key={index}
               source={{ uri: img }}
-              className="w-screen h-full rounded-3xl"
+              className="w-screen h-full"
               resizeMode="cover"
               style={{ width: screenWidth, height: imageHeight }}
               onError={(error) => console.log("Image loading error:", error)}
@@ -135,7 +136,7 @@ const ProductDetailPage = () => {
             className="w-10 h-10 bg-gray-100/50 rounded-full items-center justify-center"
           >
             <Ionicons
-              name="arrow-back-circle-outline"
+              name="arrow-back"
               size={35}
               color="black"
             />

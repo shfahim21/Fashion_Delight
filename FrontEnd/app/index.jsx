@@ -12,7 +12,7 @@ export default function SplashScreen() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       router.push("/home"); // Navigate to the /home route after loading
-    }, 3000); // Adjust time as needed
+    }, 500); // Adjust time as needed
 
     return () => clearTimeout(timer); // Cleanup timer
   }, [router]);
