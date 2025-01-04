@@ -35,7 +35,7 @@ const SignInScreen = ({ navigation }) => {
       setLoading(true);
       await userSignIn(email, password);
       axios
-        .get(`https://fd-backend-peach.vercel.app/users/${email}`)
+        .get(`https://fashion-delight.vercel.app/users/${email}`)
         .then((response) => {
           setDbUser(response.data);
           console.log(response.data);

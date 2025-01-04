@@ -17,7 +17,7 @@ const UpdateAddress = () => {
     try {
       // Uncomment this when you implement the backend functionality
       // const response = await axios.put(
-      //   "https://fd-backend-peach.vercel.app/users/1/address",
+      //   "https://fashion-delight.vercel.app/users/1/address",
       //   { address, city, zip }
       // );
       console.log("Address updated successfully:", { address, city, zip });

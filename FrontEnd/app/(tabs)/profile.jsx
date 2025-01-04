@@ -19,7 +19,7 @@ const Profile = () => {
 
   const userInfo = {
     name: "John Doe",
-    email: "john.doe@example.com",
+    email: "user@email.com",
     memberSince: "2023",
     orders: 12,
   };
@@ -153,7 +153,7 @@ const Profile = () => {
             <View className="flex-row items-center">
               <View className="relative">
                 <Image
-                  source={{ uri: "https://via.placeholder.com/96" }}
+                  source={{ uri: "https://picsum.photos/200" }}
                   className="w-20 h-20 rounded-full"
                 />
                 <TouchableOpacity

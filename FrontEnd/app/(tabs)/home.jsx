@@ -123,7 +123,7 @@ const home = () => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get(
-          "https://fd-backend-peach.vercel.app/products"
+          "https://fashion-delight.vercel.app/products"
         );
         setFeaturedProducts(response.data);
         // console.log(response.data);

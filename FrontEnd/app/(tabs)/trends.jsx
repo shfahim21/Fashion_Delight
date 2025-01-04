@@ -183,7 +183,7 @@ const TrendingProducts = () => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get(
-          "https://fd-backend-peach.vercel.app/products"
+          "https://fashion-delight.vercel.app/products"
         );
         setFeaturedProducts(response.data);
         // console.log(response.data);
@@ -265,7 +265,6 @@ const TrendingProducts = () => {
             <Text className="text-gray-700 ml-1 font-medium">
               {item.rating}
             </Text>
-
           </View>
         </View>
       </View>
@@ -338,10 +337,8 @@ const TrendingProducts = () => {
           keyExtractor={(item) => item.id.toString()}
           contentContainerClassName="p-4 pb-2 "
           showsVerticalScrollIndicator={false}
-          backgroundColor='#FFFFFF'
+          backgroundColor="#FFFFFF"
           gap={16}
-
-          
         />
       )}
     </View>

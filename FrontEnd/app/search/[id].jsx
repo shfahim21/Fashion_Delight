@@ -35,13 +35,13 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://fd-backend-peach.vercel.app/products/${id}`
+          `https://fashion-delight.vercel.app/products/${id}`
         );
 
         const processedProduct = {
           ...response.data,
-          images: response.data.variants.flatMap(variant => 
-            variant.images.map(image => image.url)
+          images: response.data.variants.flatMap((variant) =>
+            variant.images.map((image) => image.url)
           ),
           rating: response.data.metadata?.ratings?.average || 0,
           reviewCount: response.data.metadata?.ratings?.count || 0,
@@ -197,7 +197,11 @@ const ProductDetails = () => {
                 {displayProduct.discount?.percentage > 0 && (
                   <>
                     <Text className="text-lg text-gray-500 line-through mr-3">
-                      ${(displayProduct.price.amount + displayProduct.discount.amount).toFixed(2)}
+                      $
+                      {(
+                        displayProduct.price.amount +
+                        displayProduct.discount.amount
+                      ).toFixed(2)}
                     </Text>
                     <View className="bg-red-500 px-2 py-1 rounded-full">
                       <Text className="text-white text-xs font-bold">
@@ -258,11 +262,21 @@ const ProductDetails = () => {
                   key={variant.size}
                   className={`
                     mr-2 mb-2 px-4 py-2 rounded-full border
-                    ${selectedSize === variant.size ? "bg-black border-black" : "bg-white border-gray-300"}
+                    ${
+                      selectedSize === variant.size
+                        ? "bg-black border-black"
+                        : "bg-white border-gray-300"
+                    }
                   `}
                   onPress={() => setSelectedSize(variant.size)}
                 >
-                  <Text className={`font-bold ${selectedSize === variant.size ? "text-white" : "text-black"}`}>
+                  <Text
+                    className={`font-bold ${
+                      selectedSize === variant.size
+                        ? "text-white"
+                        : "text-black"
+                    }`}
+                  >
                     {variant.size}
                   </Text>
                 </TouchableOpacity>
@@ -279,7 +293,11 @@ const ProductDetails = () => {
                   key={variant.color}
                   className={`
                     mr-2 mb-2 px-4 py-2 rounded-full border
-                    ${selectedColor === variant.color ? "border-black bg-white" : "border-gray-300 bg-white"}
+                    ${
+                      selectedColor === variant.color
+                        ? "border-black bg-white"
+                        : "border-gray-300 bg-white"
+                    }
                   `}
                   onPress={() => setSelectedColor(variant.color)}
                 >
@@ -330,7 +348,11 @@ const ProductDetails = () => {
                 <Text
                   className={`
                     font-bold text-base
-                    ${activeTab.toLowerCase() === tab.toLowerCase() ? "text-black" : "text-gray-500"}
+                    ${
+                      activeTab.toLowerCase() === tab.toLowerCase()
+                        ? "text-black"
+                        : "text-gray-500"
+                    }
                   `}
                 >
                   {tab}
@@ -345,26 +367,41 @@ const ProductDetails = () => {
           {/* Content based on active tab */}
           {activeTab === "details" ? (
             <View>
-              <Text className="text-base text-gray-700 mb-4">{displayProduct.description}</Text>
+              <Text className="text-base text-gray-700 mb-4">
+                {displayProduct.description}
+              </Text>
               <View>
                 <Text className="font-semibold mb-2">Material & Care</Text>
-                <Text className="text-gray-600">Material: {displayProduct.attributes.material}</Text>
-                <Text className="text-gray-600">Weight: {displayProduct.attributes.weight}</Text>
-                {(displayProduct.attributes.care || []).map((instruction, index) => (
-                  <Text key={index} className="text-gray-600">• {instruction}</Text>
-                ))}
+                <Text className="text-gray-600">
+                  Material: {displayProduct.attributes.material}
+                </Text>
+                <Text className="text-gray-600">
+                  Weight: {displayProduct.attributes.weight}
+                </Text>
+                {(displayProduct.attributes.care || []).map(
+                  (instruction, index) => (
+                    <Text key={index} className="text-gray-600">
+                      • {instruction}
+                    </Text>
+                  )
+                )}
               </View>
               <View className="mb-4">
                 <Text className="font-semibold mb-2">Shipping Information</Text>
-                <Text className="text-gray-600">Delivery: {displayProduct.shipping.estimatedDelivery}</Text>
-                <Text className="text-gray-600">Free Shipping: {displayProduct.shipping.freeShipping ? "Yes" : "No"}</Text>
+                <Text className="text-gray-600">
+                  Delivery: {displayProduct.shipping.estimatedDelivery}
+                </Text>
+                <Text className="text-gray-600">
+                  Free Shipping:{" "}
+                  {displayProduct.shipping.freeShipping ? "Yes" : "No"}
+                </Text>
               </View>
             </View>
           ) : (
             <View>
               {/* Reviews Section */}
               <View>
-                {displayProduct.reviews.map((review, index) => (
+                {displayProduct?.reviews?.map((review, index) => (
                   <View
                     key={index}
                     className="bg-white rounded-xl p-2 mb-2"
@@ -378,11 +415,15 @@ const ProductDetails = () => {
                     <View className="flex-row justify-between items-center mb-1">
                       <View className="flex-row items-center p-1">
                         <View className="w-10 h-10 bg-gray-200 rounded-full mr-3 items-center justify-center">
-                          <Text className="font-bold">{review.name.charAt(0)}</Text>
+                          <Text className="font-bold">
+                            {review.name.charAt(0)}
+                          </Text>
                         </View>
                         <View>
                           <Text className="font-bold">{review.name}</Text>
-                          <Text className="text-xs text-gray-500">{review.date}</Text>
+                          <Text className="text-xs text-gray-500">
+                            {review.date}
+                          </Text>
                         </View>
                       </View>
                       <View className="flex-row">
@@ -422,7 +463,9 @@ const ProductDetails = () => {
                 />
 
                 <TouchableOpacity className="bg-black py-4 rounded-full">
-                  <Text className="text-white text-center font-bold">Submit Review</Text>
+                  <Text className="text-white text-center font-bold">
+                    Submit Review
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

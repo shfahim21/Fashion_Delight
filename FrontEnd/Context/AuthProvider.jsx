@@ -71,7 +71,7 @@ function AuthProvider({ children }) {
       console.log(currentUser.email);
       if (currentUser) {
         axios
-          .get(`https://fd-backend-peach.vercel.app/users/${currentUser.email}`)
+          .get(`https://fashion-delight.vercel.app/users/${currentUser.email}`)
           .then((response) => {
             setDbUser(response.data);
             console.log(response.data);

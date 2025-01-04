@@ -78,7 +78,7 @@ const SignUpScreen = ({ navigation }) => {
       await userSignUp(formData.email, formData.password);
       // create a database entry for the user
       axios
-        .post("https://fd-backend-peach.vercel.app/users", userToStore)
+        .post("https://fashion-delight.vercel.app/users", userToStore)
         .then((response) => {
           console.log("User created successfully:", response.data);
         });
