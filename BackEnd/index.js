@@ -157,6 +157,12 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/trends", async (req,res)=>{
+      const result = await products.find().toArray();
+      res.send(result);
+
+    });
+
     // update a single order
     app.put("/orders/:id", async (req, res) => {
       const id = req.params.id;
