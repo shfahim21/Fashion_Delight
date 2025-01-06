@@ -65,13 +65,13 @@ const TabLayout = () => {
           height: 65,
           paddingBottom: 5,
           paddingTop: 5,
-          borderWidth: 0,
-          borderColor: "#FFFF",
+          borderWidth: 1,
+          borderColor: "#E0E0E0",
           // borderColor: "#F33"
           elevation: 5,
-          shadowColor: "#0000",
+          shadowColor: "#9E9E9E",
           shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
+          shadowOpacity: 1,
           shadowRadius: 10,
           overflow: "hidden",
         },
@@ -112,7 +112,8 @@ const TabLayout = () => {
           title: "Category",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
-              iconName="grid"
+              // iconName="grid"
+              iconName="sparkles"
               color={color}
               name="Category"
               focused={focused}
