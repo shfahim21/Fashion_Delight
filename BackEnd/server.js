@@ -220,36 +220,36 @@ if (usersCollection) {
       res.send(result);
     });
 
-    // Update Wishlist
-    app.put("/users/:email/wishlist", async (req, res) => {
-      const email = req.params.email;
-      const { productId } = req.body; // Expect productId in the request body
+    // // Update Wishlist
+    // app.put("/users/:email/wishlist", async (req, res) => {
+    //   const email = req.params.email;
+    //   const { productId } = req.body; // Expect productId in the request body
 
-      try {
-        const filter = { email };
-        const updateDoc = {
-          $addToSet: { wishlist: productId }, // Use $addToSet to prevent duplicates
-        };
-        const result = await users.updateOne(filter, updateDoc);
+    //   try {
+    //     const filter = { email };
+    //     const updateDoc = {
+    //       $addToSet: { wishlist: productId }, // Use $addToSet to prevent duplicates
+    //     };
+    //     const result = await users.updateOne(filter, updateDoc);
 
-        if (result.modifiedCount > 0) {
-          res
-            .status(200)
-            .send({ success: true, message: "Wishlist updated successfully." });
-        } else {
-          res.status(404).send({
-            success: false,
-            message: "User not found or no changes made.",
-          });
-        }
-      } catch (error) {
-        console.error("Error updating wishlist:", error);
-        res.status(500).send({
-          success: false,
-          message: "An error occurred while updating the wishlist.",
-        });
-      }
-    });
+    //     if (result.modifiedCount > 0) {
+    //       res
+    //         .status(200)
+    //         .send({ success: true, message: "Wishlist updated successfully." });
+    //     } else {
+    //       res.status(404).send({
+    //         success: false,
+    //         message: "User not found or no changes made.",
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error("Error updating wishlist:", error);
+    //     res.status(500).send({
+    //       success: false,
+    //       message: "An error occurred while updating the wishlist.",
+    //     });
+    //   }
+    // });
 
     // Add to Cart
     // app.put("/users/:email/cart", async (req, res) => {
@@ -357,12 +357,399 @@ if (usersCollection) {
 
 
 
+    // wishlist endpoints
+    // Add/Update Wishlist Item
+app.put("/users/:email/wishlist", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { productId } = req.body;
+
+    // Validate inputs
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is required"
+      });
+    }
+
+    // Validate productId format
+    if (!ObjectId.isValid(productId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID format"
+      });
+    }
+
+    // Check if product exists
+    const productExists = await products.findOne({ _id: new ObjectId(productId) });
+    if (!productExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found"
+      });
+    }
+
+    // Create wishlist item
+    const wishlistItem = {
+      productId: new ObjectId(productId),
+      addedAt: new Date()
+    };
+
+    // Update existing item's timestamp or add new
+    const updateResult = await users.updateOne(
+      { 
+        email,
+        "wishlist.productId": wishlistItem.productId
+      },
+      {
+        $set: {
+          "wishlist.$.addedAt": wishlistItem.addedAt,
+          updatedAt: new Date()
+        }
+      }
+    );
+
+    if (updateResult.matchedCount === 0) {
+      // Add new item if not exists
+      const addResult = await users.updateOne(
+        { email },
+        {
+          $push: { wishlist: wishlistItem },
+          $set: { updatedAt: new Date() }
+        }
+      );
+
+      if (addResult.matchedCount === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+    }
+
+    // Get updated wishlist with product details
+    const user = await users.findOne({ email });
+    const wishlistWithDetails = await Promise.all(
+      user.wishlist.map(async (item) => {
+        const product = await products.findOne({ _id: item.productId });
+        return {
+          ...item,
+          product: {
+            name: product.name,
+            price: product.price,
+            image: product.images?.[0]?.url // Adjust based on your product schema
+          }
+        };
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Wishlist updated successfully",
+      wishlist: wishlistWithDetails
+    });
+
+  } catch (error) {
+    console.error("Error updating wishlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update wishlist",
+      error: error.message
+    });
+  }
+});
+
+// Get Wishlist Items with Product Details
+app.get("/users/:email/wishlist", async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    const user = await users.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const wishlistWithDetails = await Promise.all(
+      user.wishlist.map(async (item) => {
+        const product = await products.findOne({ _id: item.productId });
+        return {
+          ...item,
+          product: {
+            name: product?.name,
+            price: product?.price,
+            image: product?.images?.[0]?.url, // Adjust based on your product schema
+            available: !!product // Add availability flag
+          }
+        };
+      })
+    );
+
+    res.status(200).json({
+      // success: true,
+      wishlist: wishlistWithDetails
+    });
+
+  } catch (error) {
+    console.error("Error fetching wishlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch wishlist",
+      error: error.message
+    });
+  }
+});
+
+// Remove from Wishlist
+app.delete("/users/:email/wishlist/:productId", async (req, res) => {
+  try {
+    const { email, productId } = req.params;
+
+    // Validate productId format
+    if (!ObjectId.isValid(productId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID format"
+      });
+    }
+
+    const result = await users.updateOne(
+      { email },
+      {
+        $pull: {
+          wishlist: { productId: new ObjectId(productId) }
+        },
+        $set: { updatedAt: new Date() }
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found in wishlist"
+      });
+    }
+
+    // Get updated wishlist
+    const user = await users.findOne({ email });
+    const wishlistWithDetails = await Promise.all(
+      user.wishlist.map(async (item) => {
+        const product = await products.findOne({ _id: item.productId });
+        return {
+          ...item,
+          product: {
+            name: product?.name,
+            price: product?.price,
+            image: product?.images?.[0]?.url,
+            available: !!product
+          }
+        };
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Product removed from wishlist",
+      wishlist: wishlistWithDetails
+    });
+
+  } catch (error) {
+    console.error("Error removing from wishlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to remove product from wishlist",
+      error: error.message
+    });
+  }
+});
+
+
 
 
 
 
 
     // Add to Cart endpoint
+// app.put("/users/:email/cart", async (req, res) => {
+//   try {
+//     const { email } = req.params;
+//     const { productId, quantity, size, color } = req.body;
+
+//     // Validate inputs
+//     if (!productId || !quantity || !size || !color) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Missing required fields: productId, quantity, size, and color"
+//       });
+//     }
+
+//     // Create cart item
+//     const cartItem = {
+//       productId: new ObjectId(productId),
+//       quantity: parseInt(quantity),
+//       size: size,
+//       color: color,
+//       addedAt: new Date()
+//     };
+
+//     // Check if product exists
+//     const productExists = await products.findOne({ _id: new ObjectId(productId) });
+//     if (!productExists) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Product not found"
+//       });
+//     }
+
+//     // Update user's cart
+//     const result = await users.updateOne(
+//       { 
+//         email,
+//         "cart.productId": new ObjectId(productId),
+//         "cart.size": size,
+//         "cart.color": color
+//       },
+//       {
+//         $set: {
+//           "cart.$": cartItem,
+//           updatedAt: new Date()
+//         }
+//       }
+//     );
+
+//     if (result.matchedCount === 0) {
+//       // Item doesn't exist in cart, add it
+//       const addResult = await users.updateOne(
+//         { email },
+//         {
+//           $push: { cart: cartItem },
+//           $set: { updatedAt: new Date() }
+//         }
+//       );
+
+//       if (addResult.modifiedCount === 0) {
+//         return res.status(404).json({
+//           success: false,
+//           message: "User not found"
+//         });
+//       }
+//     }
+
+//     // Get updated user data
+//     const updatedUser = await users.findOne({ email });
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Cart updated successfully",
+//       cart: updatedUser.cart
+//     });
+
+//   } catch (error) {
+//     console.error("Error updating cart:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to update cart",
+//       error: error.message
+//     });
+//   }
+// });
+
+
+// this was the last one
+// app.put("/users/:email/cart", async (req, res) => {
+//   try {
+//     const { email } = req.params;
+//     const { productId, quantity, size, color } = req.body;
+
+//     // Validate inputs
+//     if (!productId || !quantity || !size || !color) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Missing required fields: productId, quantity, size, and color"
+//       });
+//     }
+
+//     // Create cart item
+//     const cartItem = {
+//       productId: new ObjectId(productId),
+//       quantity: parseInt(quantity),
+//       size: size,
+//       color: color,
+//       addedAt: new Date()
+//     };
+
+//     // Check if product exists
+//     const productExists = await products.findOne({ _id: new ObjectId(productId) });
+//     if (!productExists) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Product not found"
+//       });
+//     }
+
+//     // Update user's cart
+//     const result = await users.updateOne(
+//       { 
+//         email,
+//         "cart.productId": new ObjectId(productId),
+//         "cart.size": size,
+//         "cart.color": color
+//       },
+//       {
+//         $set: {
+//           "cart.$": cartItem,
+//           updatedAt: new Date()
+//         }
+//       }
+//     );
+
+//     if (result.matchedCount === 0) {
+//       // Item doesn't exist in cart, add it
+//       const addResult = await users.updateOne(
+//         { email },
+//         {
+//           $push: { cart: cartItem },
+//           $set: { updatedAt: new Date() }
+//         }
+//       );
+
+//       if (addResult.modifiedCount === 0) {
+//         return res.status(404).json({
+//           success: false,
+//           message: "User not found"
+//         });
+//       }
+//     }
+
+//     // Get updated user data
+//     const updatedUser = await users.findOne({ email });
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Cart updated successfully",
+//       cart: updatedUser.cart
+//     });
+
+//   } catch (error) {
+//     console.error("Error updating cart:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to update cart",
+//       error: error.message
+//     });
+//   }
+// });
+
+
 app.put("/users/:email/cart", async (req, res) => {
   try {
     const { email } = req.params;
@@ -376,16 +763,7 @@ app.put("/users/:email/cart", async (req, res) => {
       });
     }
 
-    // Create cart item
-    const cartItem = {
-      productId: new ObjectId(productId),
-      quantity: parseInt(quantity),
-      size: size,
-      color: color,
-      addedAt: new Date()
-    };
-
-    // Check if product exists
+    // Check if the product exists
     const productExists = await products.findOne({ _id: new ObjectId(productId) });
     if (!productExists) {
       return res.status(404).json({
@@ -394,41 +772,50 @@ app.put("/users/:email/cart", async (req, res) => {
       });
     }
 
-    // Update user's cart
-    const result = await users.updateOne(
-      { 
-        email,
-        "cart.productId": new ObjectId(productId),
-        "cart.size": size,
-        "cart.color": color
-      },
-      {
-        $set: {
-          "cart.$": cartItem,
-          updatedAt: new Date()
-        }
-      }
-    );
+    // Prepare the query to find the existing cart item
+    const query = {
+      email,
+      "cart.productId": new ObjectId(productId),
+      "cart.size": size,
+      "cart.color": color
+    };
 
-    if (result.matchedCount === 0) {
-      // Item doesn't exist in cart, add it
+    // Prepare the update operation
+    const update = {
+      $inc: { "cart.$.quantity": quantity }, // Increment quantity
+      $set: { updatedAt: new Date() }
+    };
+
+    // Attempt to update the existing cart item
+    const updateResult = await users.updateOne(query, update);
+
+    if (updateResult.matchedCount === 0) {
+      // If the item doesn't exist in the cart, add it
+      const cartItem = {
+        productId: new ObjectId(productId),
+        quantity: parseInt(quantity),
+        size: size,
+        color: color,
+        addedAt: new Date()
+      };
+
       const addResult = await users.updateOne(
         { email },
-        {
+        { 
           $push: { cart: cartItem },
           $set: { updatedAt: new Date() }
         }
       );
 
       if (addResult.modifiedCount === 0) {
-        return res.status(404).json({
+        return res.status(500).json({
           success: false,
-          message: "User not found"
+          message: "Failed to add item to cart"
         });
       }
     }
 
-    // Get updated user data
+    // Retrieve the updated cart
     const updatedUser = await users.findOne({ email });
 
     res.status(200).json({
@@ -447,6 +834,10 @@ app.put("/users/:email/cart", async (req, res) => {
   }
 });
   
+
+
+
+
   // Optional: Get Cart Items endpoint
   app.get("/users/:email/cart", async (req, res) => {
     try {
