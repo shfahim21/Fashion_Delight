@@ -11,6 +11,7 @@ import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
+import API_URL from "../config";
 
 const Wishlist = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);

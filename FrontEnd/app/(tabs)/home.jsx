@@ -16,6 +16,7 @@ import { Button } from "react-native-web";
 import { router } from "expo-router";
 import axios from "axios";
 import AllProduct from "./../AllProduct";
+import API_URL from "../../config";
 
 const home = () => {
   //no chng
@@ -123,10 +124,13 @@ const home = () => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get(
-          "https://fashion-delight.vercel.app/products"
+          // "https://fashion-delight.vercel.app/products"
+          // "http://192.168.1.104:4000/products"
+          `${API_URL}/products`
         );
+        console.log(response.data);
         setFeaturedProducts(response.data);
-        // console.log(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }
@@ -239,8 +243,8 @@ const home = () => {
                 // onPress={() => router.push("/productPage")}
               >
                 <Image
-                  // source={{ uri: product.variants[0].images[0].url }}
-                  source={{ uri: "https://via.placeholder.com/150" }}
+                  source={{ uri: product.variants[0].images[0].url }}
+                  // source={{ uri: "https://via.placeholder.com/150" }}
                   className="w-full h-40 rounded-t-2xl"
                   resizeMode="cover"
                 />

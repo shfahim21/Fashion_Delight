@@ -16,6 +16,7 @@ import Wishlist from "./../Wishlist";
 
 const Profile = () => {
   const { user, userSignOut } = useContext(AuthContext);
+  // console.log(`PROFILE : ${user.email}`);
 
   const userInfo = {
     name: "John Doe",

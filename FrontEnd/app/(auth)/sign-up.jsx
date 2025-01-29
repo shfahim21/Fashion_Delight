@@ -30,61 +30,170 @@ const SignUpScreen = ({ navigation }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // const userToStore = {
+  //   name: formData.fullName,
+  //   email: formData.email,
+  //   phone: null,
+  //   profilePicture: "https://picsum.photos/200",
+  //   dateOfBirth: null,
+  //   address: [
+  //     {
+  //       street: null,
+  //       city: null,
+  //       zip: null,
+  //     },
+  //   ],
+  //   wishlist: [],
+  //   cart: [],
+  //   role: "customer",
+  //   createdAt: new Date().toISOString(),
+  //   updatedAt: new Date().toISOString(),
+  // };
+
+  // const userToStore = {
+  //   name: formData.fullName,
+  //   email: formData.email,
+  //   password: formData.password, // You might want to hash this
+  //   phone: {
+  //     number: null,
+  //     countryCode: null
+  //   },
+  //   profilePicture: "https://picsum.photos/200",
+  //   dateOfBirth: null,
+  //   address: [],
+  //   wishlist: [],
+  //   cart: [],
+  //   role: "customer",
+  //   createdAt: new Date(),
+  //   updatedAt: new Date()
+  // };
+
+
+
   const userToStore = {
     name: formData.fullName,
     email: formData.email,
-    phone: null,
-    profilePicture: "https://picsum.photos/200",
+    password: formData.password,
+    phone: {
+      number: String(Math.floor(Math.random() * 10000000000)).padStart(10, '0'),  // Generate random phone number
+      countryCode: "+1"
+    },
+    profilePicture: "https://example.com/profiles/default.jpg",
     dateOfBirth: null,
-    address: [
-      {
-        street: null,
-        city: null,
-        zip: null,
-      },
-    ],
+    address: [],
     wishlist: [],
     cart: [],
     role: "customer",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: {
+      $date: new Date().toISOString()
+    },
+    updatedAt: {
+      $date: new Date().toISOString()
+    }
   };
 
+  // const handleSignUp = async () => {
+  //   // Basic validation
+  //   if (
+  //     !formData.fullName ||
+  //     !formData.email ||
+  //     !formData.password ||
+  //     !formData.confirmPassword
+  //   ) {
+  //     Alert.alert("Error", "Please fill in all fields.");
+  //     return;
+  //   }
+
+  //   if (formData.password !== formData.confirmPassword) {
+  //     Alert.alert("Error", "Passwords do not match.");
+  //     return;
+  //   }
+
+  //   if (formData.password.length < 4) {
+  //     Alert.alert("Error", "Password must be at least 4 characters long.");
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+  //     // Sign up logic
+  //     await userSignUp(formData.email, formData.password);
+  //     // create a database entry for the user
+  //     axios
+  //       .post("http://192.168.1.104:4000/users/", userToStore)
+  //       .then((response) => {
+  //         console.log("User created successfully:", response.data);
+  //       });
+  //     router.push("/home");
+  //   } catch (error) {
+  //     Alert.alert("Error", error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+
   const handleSignUp = async () => {
-    // Basic validation
-    if (
-      !formData.fullName ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      Alert.alert("Error", "Please fill in all fields.");
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      Alert.alert("Error", "Passwords do not match.");
-      return;
-    }
-
-    if (formData.password.length < 4) {
-      Alert.alert("Error", "Password must be at least 4 characters long.");
-      return;
-    }
-
     try {
       setLoading(true);
-      // Sign up logic
+  
+      // Validation
+      if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
+        Alert.alert("Error", "Please fill in all fields.");
+        return;
+      }
+  
+      if (formData.password !== formData.confirmPassword) {
+        Alert.alert("Error", "Passwords do not match.");
+        return;
+      }
+  
+      if (formData.password.length < 4) {
+        Alert.alert("Error", "Password must be at least 4 characters long.");
+        return;
+      }
+  
+      // First create the authentication user
       await userSignUp(formData.email, formData.password);
-      // create a database entry for the user
-      axios
-        .post("https://fashion-delight.vercel.app/users", userToStore)
-        .then((response) => {
-          console.log("User created successfully:", response.data);
-        });
-      router.push("/home");
+  
+      // Then create the user in your database
+      console.log('Sending user data:', JSON.stringify(userToStore, null, 2));
+      
+      const response = await axios.post(
+        "http://192.168.1.104:4000/users", 
+        userToStore,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log('Server response:', response.data);
+  
+      if (response.data.success) {
+        console.log("User created successfully:", response.data);
+        router.push("/home");
+      } else {
+        throw new Error("Failed to create user in database");
+      }
+  
     } catch (error) {
-      Alert.alert("Error", error.message);
+      console.error("Signup error:", error);
+      
+      // More detailed error handling
+      const errorMessage = error.response?.data?.message 
+        || error.message 
+        || "Failed to create account";
+      
+      // Log the full error details
+      if (error.response?.data) {
+        console.error("Server error details:", error.response.data);
+      }
+      
+      Alert.alert("Error", errorMessage);
     } finally {
       setLoading(false);
     }

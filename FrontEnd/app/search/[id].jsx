@@ -10,9 +10,11 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Alert
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { AuthContext } from "../../Context/AuthProvider";
+import API_URL from "../../config";
 
 const ProductDetails = () => {
   const { dbUser } = useContext(AuthContext);
@@ -31,11 +33,139 @@ const ProductDetails = () => {
 
   const defaultImages = ["https://via.placeholder.com/400"];
 
+
+
+  // Add this near the top of your component with other state
+const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+// Add this function to handle adding to cart
+// const handleAddToCart = async () => {
+//   if (!selectedSize || !selectedColor) {
+//     Alert.alert("Please select both size and color");
+//     return;
+//   }
+
+//   try {
+//     setIsAddingToCart(true);
+    
+//     const cartItem = {
+//       productId: id,
+//       quantity: quantity,
+//       size: selectedSize,
+//       color: selectedColor
+//     };
+
+//     const response = await axios.put(
+//       `http://192.168.1.104:4000/users/${dbUser.email}/cart`,
+//       cartItem,
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         }
+//       }
+//     );
+
+//     if (response.data.success) {
+//       Alert.alert("Success", "Product added to cart successfully!");
+//     } else {
+//       throw new Error(response.data.message);
+//     }
+//   } catch (error) {
+//     console.error("Error adding to cart:", error);
+//     Alert.alert(
+//       "Error",
+//       error.response?.data?.message || "Failed to add item to cart"
+//     );
+//   } finally {
+//     setIsAddingToCart(false);
+//   }
+// };
+
+
+
+const handleAddToCart = async () => {
+  if (!selectedSize || !selectedColor) {
+    Alert.alert("Error", "Please select both size and color");
+    return;
+  }
+
+  if (!dbUser?.email) {
+    Alert.alert("Error", "Please login to add items to cart");
+    return;
+  }
+
+  try {
+    setIsAddingToCart(true);
+    
+    const cartItem = {
+      productId: id,
+      quantity: parseInt(quantity),
+      size: selectedSize,
+      color: selectedColor,
+      addedAt: new Date().toISOString() // Add this line
+    };
+
+    console.log('Adding to cart:', cartItem);
+
+    const response = await axios.put(
+      `${API_URL}/${dbUser.email}/cart`,
+      cartItem,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+
+    console.log('Server response:', response.data);
+
+    if (response.data.success) {
+      Alert.alert(
+        "Success", 
+        "Product added to cart successfully!",
+        [
+          {
+            text: "View Cart",
+            onPress: () => {
+              // Navigate to cart screen if you have one
+              // navigation.navigate('Cart');
+            }
+          },
+          {
+            text: "Continue Shopping",
+            style: "cancel"
+          }
+        ]
+      );
+
+      // Reset selections after successful addition
+      setSelectedSize(null);
+      setSelectedColor(null);
+      setQuantity(1);
+    } else {
+      throw new Error(response.data.message || "Failed to add to cart");
+    }
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    Alert.alert(
+      "Error",
+      error.response?.data?.message || 
+      error.message || 
+      "Failed to add item to cart. Please try again."
+    );
+  } finally {
+    setIsAddingToCart(false);
+  }
+};
+
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        console.log("product id");
+        console.log(id);
         const response = await axios.get(
-          `https://fashion-delight.vercel.app/products/${id}`
+          `http://192.168.1.104:4000/products/${id}`
         );
 
         const processedProduct = {
@@ -226,7 +356,7 @@ const ProductDetails = () => {
                 <Ionicons name="heart-outline" color="#333" size={28} />
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 className="flex-1 bg-black py-4 rounded-full flex-row items-center justify-center ml-4"
                 style={{
                   elevation: 3,
@@ -244,7 +374,37 @@ const ProductDetails = () => {
                 <Text className="text-white font-bold text-base">
                   Add to Cart
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+
+<TouchableOpacity
+  onPress={handleAddToCart}
+  disabled={isAddingToCart}
+  className="flex-1 bg-black py-4 rounded-full flex-row items-center justify-center ml-4"
+  style={{
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+  }}
+>
+  {isAddingToCart ? (
+    <ActivityIndicator color="white" />
+  ) : (
+    <>
+      <Ionicons
+        name="cart-outline"
+        color="white"
+        size={24}
+        style={{ marginRight: 10 }}
+      />
+      <Text className="text-white font-bold text-base">
+        Add to Cart
+      </Text>
+    </>
+  )}
+</TouchableOpacity>
+
+
             </View>
           </View>
         </View>
