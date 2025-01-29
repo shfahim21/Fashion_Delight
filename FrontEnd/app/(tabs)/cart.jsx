@@ -150,25 +150,7 @@
 //     </View>
 //   );
 
-//   const EmptyCart = () => (
-//     <View className="flex-1 items-center justify-center py-20">
-//       <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
-//         <Ionicons name="cart-outline" size={40} color="#9CA3AF" />
-//       </View>
-//       <Text className="text-gray-800 text-xl font-bold mb-2">
-//         Cart is Empty
-//       </Text>
-//       <Text className="text-gray-500 text-center mb-6 px-10">
-//         Looks like you haven't added anything to your cart yet
-//       </Text>
-//       <TouchableOpacity
-//         className="bg-black px-8 py-3 rounded-full"
-//         onPress={() => console.log("Continue shopping")}
-//       >
-//         <Text className="text-white font-semibold">Start Shopping</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
+
 
 //   return (
 //     <SafeAreaView className="flex-1 bg-gray-50">
@@ -286,11 +268,20 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
 
   // Fetch cart items
   const fetchCartItems = async () => {
+    // Check if dbUser exists
+    if (!dbUser?.email) {
+      setError("Please login to view your cart");
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
+      setError(null);
       const response = await axios.get(
         `${API_URL}/users/${dbUser.email}/cart`
       );
@@ -300,7 +291,7 @@ const Cart = () => {
       }
     } catch (error) {
       console.error("Error fetching cart items:", error);
-      Alert.alert("Error", "Failed to load cart items");
+      setError("Failed to load cart items");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -309,7 +300,50 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCartItems();
-  }, [dbUser.email]);
+  }, [dbUser?.email]);
+
+  // Add an error state component
+  const ErrorMessage = () => (
+    <View className="flex-1 items-center justify-center py-20">
+      <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
+        <Ionicons name="alert-circle-outline" size={40} color="#EF4444" />
+      </View>
+      <Text className="text-gray-800 text-xl font-bold mb-2">Oops!</Text>
+      <Text className="text-gray-500 text-center mb-6 px-10">{error}</Text>
+      <TouchableOpacity
+        className="bg-black px-8 py-3 rounded-full"
+        onPress={() => console.log("Navigate to login")}
+      >
+        <Text className="text-white font-semibold">Login</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#000" />
+        <Text className="mt-2">Loading cart...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return <ErrorMessage />;
+  }
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#000" />
+        <Text className="mt-2">Loading cart...</Text>
+      </View>
+    );
+  }
+
+  // if (error) {
+  //   return <ErrorMessage />;
+  // }
 
   // Update quantity
   const updateQuantity = async (productId, change, currentQuantity) => {
@@ -444,7 +478,25 @@ const Cart = () => {
     </View>
   );
 
-  // ... EmptyCart component remains the same ...
+  const EmptyCart = () => (
+    <View className="flex-1 items-center justify-center py-20">
+      <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
+        <Ionicons name="cart-outline" size={40} color="#9CA3AF" />
+      </View>
+      <Text className="text-gray-800 text-xl font-bold mb-2">
+        Cart is Empty
+      </Text>
+      <Text className="text-gray-500 text-center mb-6 px-10">
+        Looks like you haven't added anything to your cart yet
+      </Text>
+      <TouchableOpacity
+        className="bg-black px-8 py-3 rounded-full"
+        onPress={() => console.log("Continue shopping")}
+      >
+        <Text className="text-white font-semibold">Start Shopping</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   if (loading) {
     return (

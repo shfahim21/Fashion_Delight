@@ -22,6 +22,31 @@ const home = () => {
   //no chng
   const { user } = useContext(AuthContext);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    
+    if (text.trim() === "") {
+      setFilteredProducts([]); // Reset to show all products
+      return;
+    }
+  
+    const filtered = featuredProducts.filter((product) => {
+      const searchText = text.toLowerCase();
+      return (
+        product.name.toLowerCase().includes(searchText) ||
+        product.description.toLowerCase().includes(searchText) ||
+        product.category.primary.toLowerCase().includes(searchText) ||
+        product.category.sub.toLowerCase().includes(searchText) ||
+        product.brand.toLowerCase().includes(searchText)
+      );
+    });
+  
+    setFilteredProducts(filtered);
+  };
+
   const banners = [
     {
       id: 1,
@@ -148,9 +173,11 @@ const home = () => {
           <View className="flex-row items-center bg-white rounded-2xl px-4 py-3 shadow-sm">
             <Ionicons name="search" size={20} color="#666" />
             <TextInput
-              placeholder="Search products..."
-              className="flex-1 ml-2 text-base"
-              placeholderTextColor="#666"
+                placeholder="Search products..."
+                className="flex-1 ml-2 text-base"
+                placeholderTextColor="#666"
+                value={searchQuery}
+                onChangeText={handleSearch}
             />
           </View>
         </View>
@@ -220,68 +247,76 @@ const home = () => {
         </View>
 
         {/* Featured Products */}
-        <View className="px-4 py-3">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-xl font-bold text-gray-800">
-              Featured Products
-            </Text>
-            <TouchableOpacity
-              className="flex-row items-center"
-              onPress={() => router.push("/AllProduct")}
-            >
-              <Text className="text-blue-500 mr-1">View all</Text>
-              <Ionicons name="chevron-forward" size={16} color="#2563EB" />
-            </TouchableOpacity>
-          </View>
+<View className="px-4 py-3">
+  <View className="flex-row justify-between items-center mb-4">
+    <Text className="text-xl font-bold text-gray-800">
+      {searchQuery ? "Search Results" : "Featured Products"}
+    </Text>
+    {!searchQuery && (
+      <TouchableOpacity
+        className="flex-row items-center"
+        onPress={() => router.push("/AllProduct")}
+      >
+        <Text className="text-blue-500 mr-1">View all</Text>
+        <Ionicons name="chevron-forward" size={16} color="#2563EB" />
+      </TouchableOpacity>
+    )}
+  </View>
 
-          <View className="flex-row flex-wrap justify-between">
-            {featuredProducts.map((product) => (
-              <TouchableOpacity
-                key={product._id}
-                className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
-                onPress={() => router.push(`search/${product._id}`)}
-                // onPress={() => router.push("/productPage")}
-              >
-                <Image
-                  source={{ uri: product.variants[0].images[0].url }}
-                  // source={{ uri: "https://via.placeholder.com/150" }}
-                  className="w-full h-40 rounded-t-2xl"
-                  resizeMode="cover"
-                />
-                <View className="p-3">
-                  <Text
-                    className="font-medium text-gray-800 mb-1"
-                    numberOfLines={2}
-                  >
-                    {product.name}
-                  </Text>
-                  <View className="flex-row items-center justify-between">
-                    <Text className="text-green-500 font-bold text-lg">
-                      {product.price.amount}
-                    </Text>
-                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
-                      <Ionicons name="star" size={14} color="#FFD700" />
-                      <Text className="text-gray-700 text-sm ml-1 font-medium">
-                        {product.metadata.ratings.average}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
+  <View className="flex-row flex-wrap justify-between">
+    {(searchQuery ? filteredProducts : featuredProducts).map((product) => (
+      <TouchableOpacity
+        key={product._id}
+        className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
+        onPress={() => router.push(`search/${product._id}`)}
+      >
+        <Image
+          source={{ uri: product.variants[0].images[0].url }}
+          className="w-full h-40 rounded-t-2xl"
+          resizeMode="cover"
+        />
+        <View className="p-3">
+          <Text
+            className="font-medium text-gray-800 mb-1"
+            numberOfLines={2}
+          >
+            {product.name}
+          </Text>
+          <View className="flex-row items-center justify-between">
+            <Text className="text-green-500 font-bold text-lg">
+              ${product.price.amount}
+            </Text>
+            <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
+              <Ionicons name="star" size={14} color="#FFD700" />
+              <Text className="text-gray-700 text-sm ml-1 font-medium">
+                {product.metadata.ratings.average}
+              </Text>
+            </View>
           </View>
         </View>
+      </TouchableOpacity>
+    ))}
+    
+    {searchQuery && filteredProducts.length === 0 && (
+      <View className="w-full items-center justify-center py-8">
+        <Text className="text-gray-500 text-lg">
+          No products found matching "{searchQuery}"
+        </Text>
+      </View>
+    )}
+  </View>
+</View>
       </ScrollView>
 
       {/* Filter Button */}
-      <View className="absolute bottom-6 right-4">
+      {/* <View className="absolute bottom-6 right-4">
         <TouchableOpacity
           className="bg-black w-14 h-14 rounded-full items-center justify-center shadow-lg"
           onPress={() => console.log("Filter pressed")}
         >
           <Ionicons name="funnel-outline" size={24} color="#FFFFFF" />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

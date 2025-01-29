@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 
 const Category = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -74,8 +75,36 @@ const Category = () => {
     },
   ];
 
-  const CategoryCard = ({ name, icon, items, color }) => (
-    <TouchableOpacity className="w-[48%] mb-4">
+  // const CategoryCard = ({ name, icon, items, color }) => (
+  //   <TouchableOpacity className="w-[48%] mb-4">
+  //     <LinearGradient
+  //       colors={color}
+  //       start={{ x: 0, y: 0 }}
+  //       end={{ x: 1, y: 1 }}
+  //       className="rounded-2xl p-4 h-44"
+  //     >
+  //       <View className="flex-1 justify-between">
+  //         <View className="bg-white/20 self-start p-3 rounded-full">
+  //           <Ionicons name={icon} size={24} color="white" />
+  //         </View>
+
+  //         <View>
+  //           <Text className="text-white text-lg font-bold mb-1">{name}</Text>
+  //           <View className="flex-row items-center">
+  //             <Text className="text-white/80 text-sm">{items} Products</Text>
+  //             <View className="flex-row items-center ml-auto">
+  //               <Text className="text-white mr-1">View</Text>
+  //               <Ionicons name="arrow-forward" size={16} color="white" />
+  //             </View>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     </LinearGradient>
+  //   </TouchableOpacity>
+  // );
+
+  const CategoryCard = ({ name, icon, items, color, onPress }) => (
+    <TouchableOpacity className="w-[48%] mb-4" onPress={onPress}>
       <LinearGradient
         colors={color}
         start={{ x: 0, y: 0 }}
@@ -86,7 +115,7 @@ const Category = () => {
           <View className="bg-white/20 self-start p-3 rounded-full">
             <Ionicons name={icon} size={24} color="white" />
           </View>
-
+  
           <View>
             <Text className="text-white text-lg font-bold mb-1">{name}</Text>
             <View className="flex-row items-center">
@@ -137,7 +166,7 @@ const Category = () => {
           {/* <Text className="text-gray-500 mt-1">Find everything you need</Text> */}
         </View>
 
-        {/* Search Bar */}
+        {/* Search Bar
         <View className="px-4 mb-6">
           <View className="flex-row items-center bg-white px-4 py-3 rounded-xl shadow-sm">
             <Ionicons name="search" size={20} color="#6B7280" />
@@ -149,21 +178,29 @@ const Category = () => {
               placeholderTextColor="#6B7280"
             />
           </View>
-        </View>
+        </View> */}
 
-        {/* Featured Category */}
+        {/* Featured Category
         <View className="px-4">
           <FeaturedCategory />
-        </View>
+        </View> */}
 
         {/* Categories Grid */}
-        <View className="px-4 pb-20">
-          <View className="flex-row justify-between flex-wrap">
-            {categories.map((category) => (
-              <CategoryCard key={category.id} {...category} />
-            ))}
-          </View>
-        </View>
+<View className="px-4 pb-20">
+  <View className="flex-row justify-between flex-wrap">
+    {categories.map((category) => (
+      <CategoryCard
+        key={category.id}
+        {...category}
+        onPress={() => {
+          // if (category.name === "Fashion") {
+            router.push("../AllProduct");
+          // }
+        }}
+      />
+    ))}
+  </View>
+</View>
       </ScrollView>
     </SafeAreaView>
   );

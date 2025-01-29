@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import {
   View,
@@ -26,6 +26,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("details");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
 
   const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
@@ -106,9 +107,10 @@ const handleAddToCart = async () => {
     };
 
     console.log('Adding to cart:', cartItem);
+    console.log(dbUser.email);
 
     const response = await axios.put(
-      `${API_URL}/${dbUser.email}/cart`,
+      `${API_URL}/users/${dbUser.email}/cart`,
       cartItem,
       {
         headers: {
@@ -129,6 +131,7 @@ const handleAddToCart = async () => {
             onPress: () => {
               // Navigate to cart screen if you have one
               // navigation.navigate('Cart');
+              router.push("../(tabs)/cart")
             }
           },
           {
@@ -158,6 +161,64 @@ const handleAddToCart = async () => {
   }
 };
 
+
+const handleAddToWishlist = async () => {
+  if (!dbUser?.email) {
+    Alert.alert("Error", "Please login to add items to wishlist");
+    return;
+  }
+
+  try {
+    setIsAddingToWishlist(true);
+    
+    const wishlistItem = {
+      productId: id
+    };
+
+    const response = await axios.put(
+      `${API_URL}/users/${dbUser.email}/wishlist`,
+      wishlistItem,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+
+    if (response.data.success) {
+      Alert.alert(
+        "Success", 
+        "Product added to wishlist successfully!",
+        [
+          {
+            text: "View Wishlist",
+            onPress: () => {
+              // Navigate to wishlist screen if available
+              // navigation.navigate('Wishlist');
+              router.push("../Wishlist")
+            }
+          },
+          {
+            text: "Continue Shopping",
+            style: "cancel"
+          }
+        ]
+      );
+    } else {
+      throw new Error(response.data.message || "Failed to add to wishlist");
+    }
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+    Alert.alert(
+      "Error",
+      error.response?.data?.message || 
+      error.message || 
+      "Failed to add item to wishlist. Please try again."
+    );
+  } finally {
+    setIsAddingToWishlist(false);
+  }
+};
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -344,17 +405,28 @@ const handleAddToCart = async () => {
             </View>
 
             <View className="flex-row items-center justify-between mt-4">
-              <TouchableOpacity
-                className="w-16 h-16 rounded-full bg-white items-center justify-center"
-                style={{
-                  elevation: 2,
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.1,
-                }}
-              >
-                <Ionicons name="heart-outline" color="#333" size={28} />
-              </TouchableOpacity>
+              
+            <TouchableOpacity
+      onPress={handleAddToWishlist}
+      disabled={isAddingToWishlist}
+      className="w-16 h-16 rounded-full bg-white items-center justify-center"
+      style={{
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+      }}
+    >
+      {isAddingToWishlist ? (
+        <ActivityIndicator color="#333" />
+      ) : (
+        <Ionicons 
+          name="heart-outline" 
+          color="#333" 
+          size={28} 
+        />
+      )}
+    </TouchableOpacity>
 
               {/* <TouchableOpacity
                 className="flex-1 bg-black py-4 rounded-full flex-row items-center justify-center ml-4"
