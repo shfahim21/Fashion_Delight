@@ -209,7 +209,7 @@ const home = () => {
                     <Text className="text-white font-bold text-xl mb-1">
                       {banner.title}
                     </Text>
-                    <TouchableOpacity className="bg-white backdrop-blur-md px-4 py-2 rounded-full">
+                    <TouchableOpacity className="bg-white backdrop-blur-md px-4 py-2 rounded-full" onPress={() => router.push("../AllProduct")}>
                       <Text className="text-black font-medium">Shop Now</Text>
                     </TouchableOpacity>
                   </View>

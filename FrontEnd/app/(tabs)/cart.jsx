@@ -361,7 +361,7 @@ const Cart = () => {
 
     try {
       const response = await axios.put(
-        `http://192.168.1.104:4000/users/${dbUser.email}/cart/${productId}`,
+        `${API_URL}/users/${dbUser.email}/cart/${productId}`,
         {
           quantity: newQuantity
         }
@@ -391,7 +391,7 @@ const Cart = () => {
           onPress: async () => {
             try {
               const response = await axios.delete(
-                `http://192.168.1.104:4000/users/${dbUser.email}/cart/${productId}`
+                `${API_URL}/users/${dbUser.email}/cart/${productId}`
               );
 
               if (response.data.success) {

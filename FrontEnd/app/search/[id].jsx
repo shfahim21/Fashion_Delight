@@ -226,7 +226,7 @@ const handleAddToWishlist = async () => {
         console.log("product id");
         console.log(id);
         const response = await axios.get(
-          `http://192.168.1.104:4000/products/${id}`
+          `${API_URL}/products/${id}`
         );
 
         const processedProduct = {

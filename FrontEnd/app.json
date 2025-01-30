@@ -3,6 +3,7 @@
     "name": "F_D",
     "slug": "F_D",
     "scheme": "F_D",
+    "owner": "sh.fahim",  
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,13 +20,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.your.F_D",  
+      "versionCode": 1            
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "android1" 
+      }
+    }
   }
 }
