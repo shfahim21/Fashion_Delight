@@ -451,12 +451,12 @@ const TrendingProducts = () => {
           </View>
           <View className="flex-row justify-between items-center mt-2">
             <Text className="text-xl font-bold text-green-600">
-              ${item.price.amount.$numberDouble}
+              ${item.price.amount}
             </Text>
             <View className="flex-row border-[1px] border-gray-200 items-center px-2 py-1 rounded-full">
               <Ionicons name="star" size={16} color="#FFD500" />
               <Text className="text-gray-700 ml-1 font-medium">
-                {item.metadata.ratings.average.$numberDouble}
+                {item.metadata.ratings.average}
               </Text>
             </View>
           </View>
