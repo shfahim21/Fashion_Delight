@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 //no chng
 import { AuthContext } from "../../Context/AuthProvider";
@@ -24,6 +25,9 @@ const home = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const screenWidth = Dimensions.get("window").width;
+  const BANNER_WIDTH= screenWidth*0.9;
+  const MARGIN=16;
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -50,17 +54,17 @@ const home = () => {
   const banners = [
     {
       id: 1,
-      image: "https://picsum.photos/400/200",
+      image: "https://www.shutterstock.com/image-vector/flash-sale-shopping-poster-banner-600nw-2410266013.jpg",
       title: "Special Offer",
     },
     {
       id: 2,
-      image: "https://picsum.photos/400/201",
+      image: "https://img.freepik.com/free-vector/watercolor-horizontal-sale-banner-template-summertime_23-2150250692.jpg?t=st=1738435834~exp=1738439434~hmac=e4a4b269b9bbb03340ec45bd2b30045004ff4106c8369867028baeee18ad4179&w=1380",
       title: "New Arrivals",
     },
     {
       id: 3,
-      image: "https://picsum.photos/400/202",
+      image: "https://i.graphicmama.com/blog/wp-content/uploads/2019/11/08101220/tropical-summer-sale-banner.jpg", 
       title: "Limited Time Deal",
     },
   ];
@@ -183,41 +187,41 @@ const home = () => {
         </View>
 
         {/* Banner Section */}
-        <View className="py-3">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="px-4"
-            decelerationRate="fast"
-            snapToInterval={380 + 16} // width + margin
-            snapToAlignment="center"
-          >
-            {banners.map((banner) => (
-              <TouchableOpacity
-                key={banner.id}
-                className="mr-4"
-                onPress={() => console.log(`Banner ${banner.id} pressed`)}
-              >
-                <View className="relative">
-                  <Image
-                    source={{ uri: banner.image }}
-                    className="w-[380px] h-[180px] rounded-2xl"
-                    resizeMode="cover"
-                  />
-                  <View className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl" />
-                  <View className="absolute bottom-4 left-4">
-                    <Text className="text-white font-bold text-xl mb-1">
-                      {banner.title}
-                    </Text>
-                    <TouchableOpacity className="bg-white backdrop-blur-md px-4 py-2 rounded-full" onPress={() => router.push("../AllProduct")}>
-                      <Text className="text-black font-medium">Shop Now</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+        <View >
+        <ScrollView
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    className="px-4"
+    decelerationRate={0.98}  // Add this for smoother deceleration
+    pagingEnabled={true}     // Add this for snap-like behavior
+    snapToInterval={BANNER_WIDTH + MARGIN}
+    snapToAlignment="center"
+    scrollEventThrottle={16}  // Add this for better scroll performance
+  >
+    {banners.map((banner) => (
+      <TouchableOpacity
+        key={banner.id}
+        className="mr-4"
+        onPress={() => {console.log(`Banner ${banner.id} pressed`);
+      router.push("AllProduct");
+      }}
+      >
+        <View className="relative">
+          <Image
+            source={{ uri: banner.image }}
+            style={{
+              width: BANNER_WIDTH,
+              height: BANNER_WIDTH * 0.474,
+            }}
+            className="rounded-2xl"
+            resizeMode="cover"
+          />
+          <View className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl" />
         </View>
+      </TouchableOpacity>
+    ))}
+  </ScrollView>
+</View>
 
         {/* Quick Actions */}
         <View className="px-4 py-3">
@@ -240,8 +244,8 @@ const home = () => {
               <View className="bg-red-100 w-12 h-12 rounded-full items-center justify-center mb-2">
                 <Ionicons name="flash-outline" size={24} color="#DC2626" />
               </View>
-              <Text className="font-medium text-gray-800">Hot Deals</Text>
-              <Text className="text-gray-500 text-sm">Special offers</Text>
+              <Text className="font-medium text-gray-800">Sample Page</Text>
+              <Text className="text-gray-500 text-sm">ProductPage Sample </Text>
             </TouchableOpacity>
           </View>
         </View>

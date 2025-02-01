@@ -1,85 +1,3 @@
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   ScrollView,
-//   Image,
-//   TouchableOpacity,
-// } from "react-native";
-// import { Ionicons } from "@expo/vector-icons";
-// import { router } from "expo-router";
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { SafeAreaView } from "react-native-safe-area-context";
-// import API_URL from "../config";
-
-// const Wishlist = () => {
-//   const [featuredProducts, setFeaturedProducts] = useState([]);
-
-//   useEffect(() => {
-//     const fetchFeaturedProducts = async () => {
-//       try {
-//         const response = await axios.get(
-//           "https://fashion-delight.vercel.app/products"
-//         );
-//         setFeaturedProducts(response.data);
-//         // console.log(response.data);
-//       } catch (error) {
-//         console.error("Error fetching featured products:", error);
-//       }
-//     };
-
-//     fetchFeaturedProducts();
-//   }, []);
-//   return (
-//     <SafeAreaView>
-//       <ScrollView>
-//         <Text className="text-2xl font-bold text-gray-800 mb-4 text-center mt-5 ">
-//           Wish List
-//         </Text>
-//         <View className="flex-row flex-wrap justify-between px-5">
-//           {featuredProducts.map((product) => (
-//             <TouchableOpacity
-//               key={product._id}
-//               className="bg-white rounded-2xl w-[48%] mb-4 shadow-sm overflow-hidden"
-//               onPress={() => router.push(`/product/${product.id}`)}
-//             >
-//               <Image
-//                 // source={{ uri: product.variants[0].images[0].url }}
-//                 source={{ uri: "https://via.placeholder.com/150" }}
-//                 className="w-full h-40 rounded-t-2xl"
-//                 resizeMode="cover"
-//               />
-//               <View className="p-3">
-//                 <Text
-//                   className="font-medium text-gray-800 mb-1"
-//                   numberOfLines={2}
-//                 >
-//                   {product.name}
-//                 </Text>
-//                 <View className="flex-row items-center justify-between">
-//                   <Text className="text-green-500 font-bold text-lg">
-//                     {product.price.amount}
-//                   </Text>
-//                   <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-full">
-//                     <Ionicons name="star" size={14} color="#FFD700" />
-//                     <Text className="text-gray-700 text-sm ml-1 font-medium">
-//                       {product.metadata.ratings.average}
-//                     </Text>
-//                   </View>
-//                 </View>
-//               </View>
-//             </TouchableOpacity>
-//           ))}
-//         </View>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// };
-
-// export default Wishlist;
-
-// const styles = StyleSheet.create({});
 
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -444,27 +362,41 @@ const WishlistScreen = () => {
   );
 
 
+// const ErrorMessage = () => (
+//     <View className="flex-1 items-center justify-center py-20">
+//       <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
+//         <Ionicons name="alert-circle-outline" size={40} color="#EF4444" />
+//       </View>
+//       <Text className="text-gray-800 text-xl font-bold mb-2">Oops!</Text>
+//       <Text className="text-gray-500 text-center mb-6 px-10">{error}</Text>
+//       <TouchableOpacity
+//         className="bg-black px-8 py-3 rounded-full"
+//         onPress={() => {console.log("Navigate to login");
+//           router.push("/sign-in");
+//         }}
+//       >
+//         <Text className="text-white font-semibold">Login</Text>
+//       </TouchableOpacity>
+//     </View>
+//   );
 
   if (!user) {
     return (
-      <SafeAreaView className="flex-1 bg-white">
-        <StatusBar style="dark" />
-        <View className="flex-1 justify-center items-center p-4">
-          <Ionicons name="lock-closed-outline" size={48} color="#999" mb-4 />
-          <Text className="text-xl font-bold text-gray-800 mb-2">
-            Sign in to view wishlist
-          </Text>
-          <Text className="text-sm text-gray-500 text-center mb-6">
-            Please log in to access your wishlist
-          </Text>
-          <TouchableOpacity 
-            className="bg-blue-500 px-6 py-3 rounded-full"
-            onPress={() => {/* Navigate to Login */}}
-          >
-            <Text className="text-white font-medium">Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <View className="flex-1 items-center justify-center py-20">
+      <View className="bg-gray-100 w-24 h-24 rounded-full items-center justify-center mb-6">
+        <Ionicons name="alert-circle-outline" size={40} color="#EF4444" />
+      </View>
+      <Text className="text-gray-800 text-xl font-bold mb-2">Oops!</Text>
+      <Text className="text-gray-500 text-center mb-6 px-10">Please Login to view your wishlist.</Text>
+      <TouchableOpacity
+        className="bg-black px-8 py-3 rounded-full"
+        onPress={() => {console.log("Navigate to login");
+          router.push("/sign-in");
+        }}
+      >
+        <Text className="text-white font-semibold">Login</Text>
+      </TouchableOpacity>
+    </View>
     );
   }
 

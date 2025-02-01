@@ -261,6 +261,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthContext } from "../../Context/AuthProvider";
 import axios from "axios";
 import API_URL from "../../config";
+import { router } from "expo-router";
 
 const Cart = () => {
   const insets = useSafeAreaInsets();
@@ -312,7 +313,9 @@ const Cart = () => {
       <Text className="text-gray-500 text-center mb-6 px-10">{error}</Text>
       <TouchableOpacity
         className="bg-black px-8 py-3 rounded-full"
-        onPress={() => console.log("Navigate to login")}
+        onPress={() => {console.log("Navigate to login");
+          router.push("/sign-in");
+        }}
       >
         <Text className="text-white font-semibold">Login</Text>
       </TouchableOpacity>
