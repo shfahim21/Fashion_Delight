@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "F_D",
+    "name": "Fashion Delight",
     "slug": "F_D",
-    "scheme": "F_D",
-    "owner": "sh.fahim",  
+    "scheme": ["fashiondelight"],
+    "owner": "sh.fahim",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/image.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -18,11 +18,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/image.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.your.F_D",  
-      "versionCode": 1            
+      "package": "com.your.F_D",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,7 +32,10 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "android1" 
+        "projectId": "520c4605-a895-4d1b-a303-1e519c554f70"
+      },
+      "router": {
+        "origin": false
       }
     }
   }

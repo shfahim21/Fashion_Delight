@@ -1,0 +1,27 @@
+# Native folders
+/android
+/ios
+
+# Other common Expo/React Native ignores
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+.DS_Store
+*.pem
+
+# Node modules
+node_modules/
+
+# Local configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
