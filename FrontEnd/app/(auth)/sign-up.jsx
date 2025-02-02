@@ -17,6 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
 import { Link, router } from "expo-router";
 import axios from "axios";
+import API_URL from "../../config";
 
 const SignUpScreen = ({ navigation }) => {
   const { userSignUp, setUser } = useContext(AuthContext);
@@ -162,7 +163,7 @@ const SignUpScreen = ({ navigation }) => {
       console.log('Sending user data:', JSON.stringify(userToStore, null, 2));
       
       const response = await axios.post(
-        "http://192.168.1.104:4000/users", 
+        `${API_URL}/users`, 
         userToStore,
         {
           headers: {
@@ -339,7 +340,7 @@ const SignUpScreen = ({ navigation }) => {
             </TouchableOpacity>
 
             {/* Social Sign Up */}
-            <View className="items-center mt-8">
+            {/* <View className="items-center mt-8">
               <Text className="text-gray-500 text-sm mb-4">OR</Text>
               <View className="flex-row justify-center space-x-6">
                 <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
@@ -352,7 +353,7 @@ const SignUpScreen = ({ navigation }) => {
                   <Icon name="logo-apple" size={24} color="#000000" />
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
 
             {/* Sign In Link */}
             <View className="flex-row justify-center mt-8 mb-6">

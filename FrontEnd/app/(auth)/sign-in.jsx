@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Context/AuthProvider";
 import { Link, router } from "expo-router";
 import axios from "axios";
-
+import API_URL from "../../config";
 const SignInScreen = ({ navigation }) => {
   const { setUser, userSignIn, setDbUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -35,7 +35,7 @@ const SignInScreen = ({ navigation }) => {
       setLoading(true);
       await userSignIn(email, password);
       axios
-        .get(`http://192.168.1.104:4000/users/${email}`)
+        .get(`/users/${email}`)
         .then((response) => {
           setDbUser(response.data);
           console.log(response.data);
@@ -144,7 +144,7 @@ const SignInScreen = ({ navigation }) => {
             </TouchableOpacity>
 
             {/* Social Sign In */}
-            <View className="items-center mt-10">
+            {/* <View className="items-center mt-10">
               <Text className="text-gray-500 text-sm mb-4">OR</Text>
               <View className="flex-row justify-center space-x-6">
                 <TouchableOpacity className="w-12 h-12 border border-gray-300 rounded-full items-center justify-center bg-white">
@@ -157,7 +157,7 @@ const SignInScreen = ({ navigation }) => {
                   <Icon name="logo-apple" size={24} color="#000000" />
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
 
             {/* Sign Up Link */}
             <View className="flex-row justify-center mt-8 mb-6">

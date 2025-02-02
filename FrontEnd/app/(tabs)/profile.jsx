@@ -29,6 +29,8 @@ const Profile = () => {
           const response = await axios.get(
             `${API_URL}/users/${user.email}`
           );
+          console.log(user.email);
+          console.log(JSON.stringify(response));
           setUserDetails(response.data);
         } catch (error) {
           console.error("Error fetching user details:", error);
@@ -53,11 +55,12 @@ const Profile = () => {
 
   const userInfo = {
     name: userDetails?.name || "Guest User",
-    email: user?.email || "Not logged in",
+    email: userDetails?.email || "Not logged in",
     memberSince: userDetails?.createdAt 
       ? new Date(userDetails.createdAt).getFullYear() 
       : "2023",
     orders: userDetails?.cart?.length || 0,
+    profilePicture: "https://img.freepik.com/premium-vector/anime-vector-illustration_969863-198939.jpg?w=1380",
   };
 
   const menuSections = [
@@ -189,7 +192,7 @@ const Profile = () => {
               <View className="relative">
                 <Image
                   source={{ 
-                    uri: userDetails?.profilePicture 
+                    uri: userInfo?.profilePicture 
                   }}
                   className="w-20 h-20 rounded-full"
                 />
@@ -202,7 +205,7 @@ const Profile = () => {
               </View>
               <View className="ml-4 flex-1">
                 <Text className="text-xl font-bold text-gray-800">
-                  {userInfo.name}
+                  {userInfo?.name}
                 </Text>
                 <Text className="text-gray-500">{userInfo.email}</Text>
                 <View className="flex-row mt-2">
